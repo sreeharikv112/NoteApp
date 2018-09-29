@@ -1,5 +1,6 @@
 # NoteApp
-** Note creation with help of Android Jetpack components **</br>
+</br>
+**Note creation with help of Android Jetpack components**</br>
 
 Applicaiton created in Kotlin with Android Architecture Components and Room</br>
 
