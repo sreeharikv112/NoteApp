@@ -11,4 +11,8 @@
     <string name="cancel">Cancel</string>
     <string name="delete_confirmation">Do you want to delete this note?</string>
     <string name="note_deleted">Note got deleted</string>
+
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
