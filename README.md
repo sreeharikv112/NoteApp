@@ -9,7 +9,7 @@ Application created using *Android Architecture Components* and *Material Design
 </br>
 
 *Landing Screen with list of created notes* </br></br>
-![screenshot_20181002-224330](https://user-images.githubusercontent.com/39777674/46365229-abd3a080-c695-11e8-9b7e-699f4e0e8448.png)
+![screenshot_20181002-232537](https://user-images.githubusercontent.com/39777674/46367332-dc6a0900-c69a-11e8-9e1d-f9d6fd7ea68c.png)
 
 </br></br>
 
@@ -27,7 +27,8 @@ Application created using *Android Architecture Components* and *Material Design
 </br></br>
 
 *Delete confirmation for created note*</br></br>
-![screenshot_20181002-224455](https://user-images.githubusercontent.com/39777674/46365519-73809200-c696-11e8-8200-3d31b831b39c.png)
+![screenshot_20181002-232924](https://user-images.githubusercontent.com/39777674/46367451-3965bf00-c69b-11e8-9d8a-8fea4dfda6b4.png)
+
 
 
 </br></br>
