@@ -2,8 +2,8 @@
 
 ## Note creation with help of Android Jetpack components </br>
 </br>
-Applicaiton created with [Android Architecture Components] (https://developer.android.com/topic/libraries/architecture/) and [Material Design] (https://developer.android.com/guide/topics/ui/look-and-feel/)</br>
-</br></br>
+Applicaiton created with [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/) and [Material Design] (https://developer.android.com/guide/topics/ui/look-and-feel/)</br>
+
 
 ###### Built in Kotlin using Android Studio</br>
 </br>
