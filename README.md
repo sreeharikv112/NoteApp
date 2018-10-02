@@ -2,6 +2,7 @@
 
 ## Note creation with help of Android Jetpack components </br>
 </br>
+
 Application created using *Android Architecture Components* and *Material Design*
 
 ###### Built in Kotlin using Android Studio</br>
