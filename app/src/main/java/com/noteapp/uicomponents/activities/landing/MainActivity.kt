@@ -12,15 +12,14 @@ import com.noteapp.models.NoteListViewModel
 import com.noteapp.models.NoteModel
 import com.noteapp.uicomponents.activities.makenote.MakeNoteActivity
 import com.noteapp.uicomponents.base.BaseActivity
-
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity(), View.OnLongClickListener {
 
-    private lateinit var mRecyclerView:RecyclerView
-    private lateinit var mNoteAdapter:NoteAdapter
+    private lateinit var mRecyclerView: RecyclerView
+    private lateinit var mNoteAdapter: NoteAdapter
     private lateinit var mNoteListViewModel: NoteListViewModel
-    private lateinit var mNoteModel:NoteModel
+    private lateinit var mNoteModel: NoteModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,26 +28,26 @@ class MainActivity : BaseActivity(), View.OnLongClickListener {
 
         mRecyclerView = findViewById(R.id.listOfNoteRecyclerView)
         mRecyclerView.layoutManager = LinearLayoutManager(this)
-        mNoteAdapter = NoteAdapter(noteList = ArrayList<NoteModel>(),longClickListener = this)
+        mNoteAdapter = NoteAdapter(noteList = ArrayList<NoteModel>(), longClickListener = this)
         mRecyclerView.adapter = mNoteAdapter
 
         fab.setOnClickListener { view ->
             invokeNewNoteActivity()
         }
 
-        mNoteListViewModel=ViewModelProviders.of(this).get(NoteListViewModel::class.java)
+        mNoteListViewModel = ViewModelProviders.of(this).get(NoteListViewModel::class.java)
         mNoteListViewModel.mNoteList.observe(this@MainActivity, Observer { noteModels -> mNoteAdapter.addNote(noteModels) })
 
     }
 
-    fun invokeNewNoteActivity(){
-        val intent= Intent(this@MainActivity,MakeNoteActivity::class.java)
+    fun invokeNewNoteActivity() {
+        val intent = Intent(this@MainActivity, MakeNoteActivity::class.java)
         startActivity(intent)
     }
 
     override fun onLongClick(v: View?): Boolean {
         mNoteModel = v?.getTag() as NoteModel
-        showAlert(getString(R.string.delete_confirmation),R.string.ok, R.string.cancel)
+        showAlert(getString(R.string.delete_confirmation), R.string.ok, R.string.cancel)
         return true
     }
 
