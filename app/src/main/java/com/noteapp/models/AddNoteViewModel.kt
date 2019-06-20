@@ -5,11 +5,9 @@ import androidx.lifecycle.AndroidViewModel
 import com.noteapp.db.DBUtils
 import com.noteapp.db.NoteDataBase
 
-class AddNoteViewModel : AndroidViewModel {
+class AddNoteViewModel(application: Application) : AndroidViewModel(application) {
 
-    var mNoteDataBase: NoteDataBase = NoteDataBase.getInstance(getApplication())!!
-
-    constructor(application: Application):super(application){    }
+    private var mNoteDataBase: NoteDataBase = NoteDataBase.getInstance(getApplication())!!
 
     fun addNote(noteModel: NoteModel ){
         var dbUtils= DBUtils()

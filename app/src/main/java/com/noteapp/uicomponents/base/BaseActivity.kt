@@ -1,9 +1,7 @@
 package com.noteapp.uicomponents.base
 
 import android.content.Context
-import android.content.DialogInterface
 import android.graphics.Rect
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
 import android.view.MotionEvent
@@ -11,21 +9,19 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import com.noteapp.R
+import androidx.appcompat.app.AppCompatActivity
 import com.noteapp.common.AppLogger
 import com.noteapp.common.AppUtils
 import com.noteapp.uicomponents.activities.uiinterfaces.AlertCallBack
 
 open class BaseActivity : AppCompatActivity(), AlertCallBack {
 
-    lateinit var mCallBackAlertDialog:AlertDialog
-    var mAppLogger : AppLogger = AppLogger()
-    var mAppUtils: AppUtils = AppUtils()
+    private lateinit var mCallBackAlertDialog:AlertDialog
+    protected val mAppLogger : AppLogger = AppLogger()
+    protected val mAppUtils: AppUtils = AppUtils()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
     }
 
     fun showAlert(message :String,positiveBtnText: Int, negativeBtnText:Int){

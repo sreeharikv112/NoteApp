@@ -10,8 +10,8 @@ import com.noteapp.models.NoteModel
 
 class NoteAdapter(noteList:List<NoteModel>,longClickListener: View.OnLongClickListener) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
-    var mNoteList:List<NoteModel>
-    var mLongClickListener: View.OnLongClickListener
+    private var mNoteList:List<NoteModel>
+    private var mLongClickListener: View.OnLongClickListener
 
     init {
         this.mNoteList = noteList

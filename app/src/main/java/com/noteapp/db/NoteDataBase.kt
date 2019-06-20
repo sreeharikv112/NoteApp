@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.noteapp.models.NoteModel
 
-@Database(entities = arrayOf(NoteModel::class), version = 1, exportSchema = false)
+@Database(entities = [NoteModel::class], version = 1, exportSchema = false)
 
 abstract class NoteDataBase : RoomDatabase(){
 
@@ -16,7 +16,7 @@ abstract class NoteDataBase : RoomDatabase(){
         fun getInstance(context : Context):NoteDataBase?{
             if(INSTANCE == null){
                 synchronized(NoteDataBase::class){
-                    INSTANCE=Room.databaseBuilder(context.getApplicationContext(),
+                    INSTANCE=Room.databaseBuilder(context.applicationContext,
                             NoteDataBase::class.java, "notedb.db"
                             ).build()
                 }

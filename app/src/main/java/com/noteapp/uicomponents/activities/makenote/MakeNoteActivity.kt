@@ -3,8 +3,6 @@ package com.noteapp.uicomponents.activities.makenote
 import android.os.Bundle
 import android.view.View
 import com.noteapp.R
-import com.noteapp.common.AppLogger
-import com.noteapp.common.AppUtils
 import com.noteapp.models.AddNoteViewModel
 import com.noteapp.models.NoteModel
 import com.noteapp.uicomponents.base.BaseActivity
@@ -14,8 +12,8 @@ import kotlinx.android.synthetic.main.content_make_note.*
 
 class MakeNoteActivity : BaseActivity() ,View.OnClickListener {
 
-    var TAG:String= MakeNoteActivity::class.java.simpleName
-    lateinit var mAddNoteModel: AddNoteViewModel
+    private var mTag:String= MakeNoteActivity::class.java.simpleName
+    private lateinit var mAddNoteModel: AddNoteViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +35,7 @@ class MakeNoteActivity : BaseActivity() ,View.OnClickListener {
                         return
                     }
                     else {
-                        mAppLogger.d(TAG,"Proceed with saving to DB ")
+                        mAppLogger.debug(mTag,"Proceed with saving to DB ")
                         var noteModel =  NoteModel()
                         noteModel.noteTitle=addNoteTitle.text.toString()
                         noteModel.noteDescription=addNoteDescription.text.toString()

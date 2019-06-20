@@ -6,12 +6,12 @@ import androidx.lifecycle.LiveData
 import com.noteapp.db.DBUtils
 import com.noteapp.db.NoteDataBase
 
-class NoteListViewModel : AndroidViewModel {
+class NoteListViewModel(application: Application):  AndroidViewModel(application) {
 
     var mNoteList: LiveData<List<NoteModel>>
-    var mNoteDataBase: NoteDataBase = NoteDataBase.getInstance(getApplication())!!
+    private var mNoteDataBase: NoteDataBase = NoteDataBase.getInstance(getApplication())!!
 
-    constructor(application: Application):super(application){
+    init {
         mNoteList = mNoteDataBase.noteItemAndNotesModel().getAllNotes()
     }
 

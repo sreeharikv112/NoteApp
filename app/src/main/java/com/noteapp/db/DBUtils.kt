@@ -1,6 +1,5 @@
 package com.noteapp.db
 
-import android.util.Log
 import com.noteapp.common.AppLogger
 import com.noteapp.models.NoteModel
 import org.jetbrains.anko.doAsync
@@ -12,18 +11,18 @@ class DBUtils {
     var mAppLogger : AppLogger = AppLogger()
 
     fun deleteNoteItem(noteDataBase:NoteDataBase,noteModel: NoteModel){
-        mAppLogger.d(TAG,"deleteNoteItem")
+        mAppLogger.debug(TAG,"deleteNoteItem")
         doAsync {
             noteDataBase.noteItemAndNotesModel().deleteNote(noteModel)
-            Log.d(TAG,"noteModel deleted")
+            mAppLogger.debug(TAG,"noteModel deleted")
         }
     }
 
     fun addNote(noteDataBase:NoteDataBase,noteModel: NoteModel){
-        mAppLogger.d(TAG,"addNote")
+        mAppLogger.debug(TAG,"addNote")
         doAsync {
             noteDataBase.noteItemAndNotesModel().insertNote(noteModel)
-            Log.d(TAG,"noteModel added")
+            mAppLogger.debug(TAG,"noteModel added")
         }
 
     }
