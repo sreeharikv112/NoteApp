@@ -29,15 +29,13 @@ androidExtensions {
 }
 
 dependencies {
+    //UI
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta1'
-    implementation 'com.google.android.material:material:1.1.0-alpha07'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation "androidx.appcompat:appcompat:$andx_app_appcompat"
+    implementation "androidx.constraintlayout:constraintlayout:$andx_constraint"
+    implementation "com.google.android.material:material:$material_design"
+    implementation "androidx.legacy:legacy-support-v4:$andx_legacy_support"
 
     //Lifecycle ViewModel and LiveData
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
@@ -48,7 +46,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
 
     //Anko
-    implementation "org.jetbrains.anko:anko-commons:0.10.4"
+    implementation "org.jetbrains.anko:anko-commons:$anko_version"
 
 
 }

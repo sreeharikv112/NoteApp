@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".uicomponents.activities.viewnote.ViewNote"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:layout_margin="@dimen/margin_10"
+    >
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/margin_10"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/noteHead"
+            android:text=""
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/noteContent"
+            android:text=""
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+</androidx.core.widget.NestedScrollView>

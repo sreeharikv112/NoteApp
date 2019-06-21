@@ -2,6 +2,7 @@ package com.noteapp.uicomponents.activities.landing
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -11,10 +12,12 @@ import com.noteapp.R
 import com.noteapp.models.NoteListViewModel
 import com.noteapp.models.NoteModel
 import com.noteapp.uicomponents.activities.makenote.MakeNoteActivity
+import com.noteapp.uicomponents.activities.viewnote.ViewNote
 import com.noteapp.uicomponents.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity(), View.OnLongClickListener {
+class MainActivity : BaseActivity(), View.OnClickListener {
+
 
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mNoteAdapter: NoteAdapter
@@ -28,7 +31,11 @@ class MainActivity : BaseActivity(), View.OnLongClickListener {
 
         mRecyclerView = findViewById(R.id.listOfNoteRecyclerView)
         mRecyclerView.layoutManager = LinearLayoutManager(this)
-        mNoteAdapter = NoteAdapter(noteList = ArrayList<NoteModel>(), longClickListener = this)
+        mNoteAdapter = NoteAdapter(noteList = ArrayList<NoteModel>(),
+                onClickListener = this,
+                onDeletePressed = DeleteBtnClick(),
+                onEditPressed = EditBtnClick()
+                )
         mRecyclerView.adapter = mNoteAdapter
 
         fab.setOnClickListener { view ->
@@ -40,20 +47,39 @@ class MainActivity : BaseActivity(), View.OnLongClickListener {
 
     }
 
-    fun invokeNewNoteActivity() {
+    private fun invokeNewNoteActivity() {
         val intent = Intent(this@MainActivity, MakeNoteActivity::class.java)
         startActivity(intent)
     }
 
-    override fun onLongClick(v: View?): Boolean {
+
+    override fun onClick(v: View?) {
         mNoteModel = v?.getTag() as NoteModel
-        showAlert(getString(R.string.delete_confirmation), R.string.ok, R.string.cancel)
-        return true
+        val intent = Intent(this@MainActivity, ViewNote::class.java)
+        intent.putExtra("selectedNote",mNoteModel)
+        startActivity(intent)
     }
+
 
     override fun handlePositiveAlertCallBack() {
         mNoteListViewModel.deleteNote(mNoteModel)
         showToast(getString(R.string.note_deleted))
     }
 
+    inner class DeleteBtnClick : View.OnClickListener{
+        override fun onClick(v: View?) {
+            mNoteModel = v?.getTag() as NoteModel
+            showAlert(getString(R.string.delete_confirmation), R.string.ok, R.string.cancel)
+        }
+    }
+
+    inner class EditBtnClick : View.OnClickListener{
+        override fun onClick(v: View?) {
+            mNoteModel = v?.getTag() as NoteModel
+            val intent = Intent(this@MainActivity, MakeNoteActivity::class.java)
+            intent.putExtra("selectedNote",mNoteModel)
+            intent.putExtra("editAction",true)
+            startActivity(intent)
+        }
+    }
 }

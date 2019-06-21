@@ -3,19 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@drawable/background"
     tools:context=".uicomponents.activities.splash.SplashActivity">
 
 
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="Note App"
-        android:textStyle="bold"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/text_size_25"
+        android:src="@drawable/noteback"
         />
 
 </RelativeLayout>

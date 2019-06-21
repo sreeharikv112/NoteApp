@@ -3,19 +3,28 @@ package com.noteapp.uicomponents.activities.landing
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.noteapp.R
 import com.noteapp.models.NoteModel
 
-class NoteAdapter(noteList:List<NoteModel>,longClickListener: View.OnLongClickListener) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
+class NoteAdapter(noteList:List<NoteModel>,
+                  onClickListener: View.OnClickListener ,
+                  onDeletePressed: View.OnClickListener ,
+                  onEditPressed :  View.OnClickListener
+                  ) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
     private var mNoteList:List<NoteModel>
-    private var mLongClickListener: View.OnLongClickListener
+    private var mClickListener : View.OnClickListener
+    private var mDeleteClickListener : View.OnClickListener
+    private var mEditClickListener : View.OnClickListener
 
     init {
         this.mNoteList = noteList
-        this.mLongClickListener = longClickListener
+        this.mClickListener = onClickListener
+        this.mDeleteClickListener = onDeletePressed
+        this.mEditClickListener = onEditPressed
     }
 
     fun addNote(noteList:List<NoteModel>){
@@ -32,7 +41,11 @@ class NoteAdapter(noteList:List<NoteModel>,longClickListener: View.OnLongClickLi
         holder.noteTitle.text = noteModel.noteTitle
         holder.noteDesc.text= noteModel.noteDescription
         holder.itemView.tag = noteModel
-        holder.itemView.setOnLongClickListener(mLongClickListener)
+        holder.deleteNote.tag = noteModel
+        holder.editNote.tag = noteModel
+        holder.itemView.setOnClickListener(mClickListener)
+        holder.deleteNote.setOnClickListener(mDeleteClickListener)
+        holder.editNote.setOnClickListener(mEditClickListener)
     }
 
     override fun getItemCount(): Int {
@@ -42,5 +55,7 @@ class NoteAdapter(noteList:List<NoteModel>,longClickListener: View.OnLongClickLi
     class NoteViewHolder(itemView:View ) : RecyclerView.ViewHolder(itemView){
         var noteTitle: TextView = itemView.findViewById(R.id.noteTitle)
         var noteDesc: TextView = itemView.findViewById(R.id.noteDescription)
+        var deleteNote : ImageView = itemView.findViewById(R.id.deleteBtn)
+        var editNote : ImageView = itemView.findViewById(R.id.editBtn)
     }
 }

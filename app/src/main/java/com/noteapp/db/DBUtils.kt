@@ -24,6 +24,14 @@ class DBUtils {
             noteDataBase.noteItemAndNotesModel().insertNote(noteModel)
             mAppLogger.debug(TAG,"noteModel added")
         }
+    }
+
+    fun updateNote(noteDataBase:NoteDataBase,noteModel: NoteModel){
+        mAppLogger.debug(TAG,"update Note")
+        doAsync {
+            noteDataBase.noteItemAndNotesModel().updateNote(noteModel)
+            mAppLogger.debug(TAG,"noteModel updated")
+        }
 
     }
 }
