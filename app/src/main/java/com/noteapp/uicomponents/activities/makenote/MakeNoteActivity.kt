@@ -39,7 +39,7 @@ class MakeNoteActivity : BaseActivity() ,View.OnClickListener {
         isEditNote = intent.getBooleanExtra("editAction",false)
 
         if (isEditNote && mNoteModel != null) {
-
+            actionBar!!.title = getString(R.string.edit_note)
             mNoteTitle?.setText(mNoteModel?.noteTitle)
             mNoteDesc?.setText(mNoteModel?.noteDescription)
         }

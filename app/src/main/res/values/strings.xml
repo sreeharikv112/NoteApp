@@ -5,6 +5,7 @@
     <string name="note_title">Note Title</string>
     <string name="title_activity_make_note">MakeNoteActivity</string>
     <string name="create_note">Create Note</string>
+    <string name="edit_note">Edit Note</string>
     <string name="view_note">View Note</string>
     <string name="note_title_error">Please enter Note Title</string>
     <string name="create_note_error">Please enter Note Details</string>
