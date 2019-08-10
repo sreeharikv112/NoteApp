@@ -8,7 +8,11 @@ import com.noteapp.models.NoteModel
 import com.noteapp.uicomponents.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_note.*
 import android.R
-
+import android.content.Intent
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import com.noteapp.uicomponents.activities.makenote.MakeNoteActivity
 
 
 class ViewNote : BaseActivity() {
@@ -22,7 +26,7 @@ class ViewNote : BaseActivity() {
         setContentView(com.noteapp.R.layout.activity_view_note)
         val actionBar = toolbar
         actionBar!!.title = getString(com.noteapp.R.string.view_note)
-
+        setSupportActionBar(actionBar)
         mNoteModel = intent.extras!!.getParcelable<NoteModel>("selectedNote")
 
         val noteTitle = mNoteModel?.noteTitle
@@ -39,6 +43,33 @@ class ViewNote : BaseActivity() {
                 textNoteDesc?.text = noteDesc
             }
         }
+    }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
+        var inflator = menuInflater
+        inflator.inflate(com.noteapp.R.menu.edit_menu,menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+
+        when (item!!.itemId)
+        {
+            com.noteapp.R.id.action_edit ->
+            {
+                showEditNote()
+            }
+
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun showEditNote() {
+        val intent = Intent(this@ViewNote, MakeNoteActivity::class.java)
+        intent.putExtra("selectedNote",mNoteModel)
+        intent.putExtra("editAction",true)
+        startActivity(intent)
     }
 }

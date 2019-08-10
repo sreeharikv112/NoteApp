@@ -1,6 +1,9 @@
 package com.noteapp.uicomponents.activities.makenote
 
 import android.os.Bundle
+import android.view.ContextMenu
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import com.google.android.material.textfield.TextInputEditText
 import com.noteapp.R
@@ -26,8 +29,10 @@ class MakeNoteActivity : BaseActivity() ,View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_note)
+
         val actionBar = toolbar
         actionBar!!.title = getString(R.string.create_note)
+        setSupportActionBar(actionBar)
         fab_make_note.setOnClickListener(this)
         mAddNoteModel = AddNoteViewModel(application)
         mEditNoteModel = UpdateNoteViewModel(application)
@@ -45,32 +50,58 @@ class MakeNoteActivity : BaseActivity() ,View.OnClickListener {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
+        var inflator = menuInflater
+        inflator.inflate(R.menu.create_note_menu,menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+
+        when (item!!.itemId)
+        {
+            R.id.action_save ->
+            {
+                validateAndSaveNote()
+            }
+
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onClick(v: View) {
         when(v.id){
             R.id.fab_make_note ->{
-                    if (!mAppUtils.isInputEditTextFilled(addNoteTitle!!, addNoteLayout!!, getString(R.string.note_title_error))) {
-                        return
-                    }
-                    else if (!mAppUtils.isInputEditTextFilled(addNoteDescription!!, addNoteDescriptionLayout!!, getString(R.string.create_note_error))) {
-                        return
-                    }
-                    else {
-                        mAppLogger.debug(mTag,"Proceed with saving to DB ")
-
-                        if(isEditNote){
-                            mNoteModel?.noteTitle = addNoteTitle.text.toString()
-                            mNoteModel?.noteDescription = addNoteDescription.text.toString()
-                            mNoteModel?.let { mEditNoteModel?.updateNote(it) }
-                        }
-                        else {
-                            var noteModel = NoteModel()
-                            noteModel.noteTitle = addNoteTitle.text.toString()
-                            noteModel.noteDescription = addNoteDescription.text.toString()
-                            mAddNoteModel?.addNote(noteModel)
-                        }
-                        closeActivity()
-                    }
+                validateAndSaveNote()
             }
+        }
+    }
+
+    private fun validateAndSaveNote(){
+
+        if (!mAppUtils.isInputEditTextFilled(addNoteTitle!!, addNoteLayout!!, getString(R.string.note_title_error))) {
+            return
+        }
+        else if (!mAppUtils.isInputEditTextFilled(addNoteDescription!!, addNoteDescriptionLayout!!, getString(R.string.create_note_error))) {
+            return
+        }
+        else {
+            mAppLogger.debug(mTag,"Proceed with saving to DB ")
+
+            if(isEditNote){
+                mNoteModel?.noteTitle = addNoteTitle.text.toString()
+                mNoteModel?.noteDescription = addNoteDescription.text.toString()
+                mNoteModel?.let { mEditNoteModel?.updateNote(it) }
+            }
+            else {
+                var noteModel = NoteModel()
+                noteModel.noteTitle = addNoteTitle.text.toString()
+                noteModel.noteDescription = addNoteDescription.text.toString()
+                mAddNoteModel?.addNote(noteModel)
+            }
+            closeActivity()
         }
     }
 
