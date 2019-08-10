@@ -8,28 +8,54 @@ Application created using *Android Architecture Components* and *Material Design
 ###### Built in Kotlin using Android Studio</br>
 </br>
 
-*Landing Screen with list of created notes* </br></br>
-![screenshot_20181002-232537](https://user-images.githubusercontent.com/39777674/46367332-dc6a0900-c69a-11e8-9e1d-f9d6fd7ea68c.png)
+*Splash Screen*  </br>
 
-</br></br>
+<img width="368" alt="Screenshot 2019-06-21 at 6 46 11 PM" src="https://user-images.githubusercontent.com/39777674/59926419-e796dc00-9457-11e9-8f01-c4bb78fcb967.png">
 
-*New note creation*</br></br>
+</br>
 
-![screenshot_20181002-224339](https://user-images.githubusercontent.com/39777674/46365312-e1788980-c695-11e8-9fcf-e8e253d637ea.png)
-</br></br>
+*Landing Screen with list of created notes*  </br>
 
-*New note*</br></br>
-![screenshot_20181002-224445](https://user-images.githubusercontent.com/39777674/46365357-079e2980-c696-11e8-93ef-7838e6a32455.png)
-</br></br>
-
-*New note validation error*</br></br>
-![screenshot_20181002-224913](https://user-images.githubusercontent.com/39777674/46365415-2d2b3300-c696-11e8-8c84-9b9f2496e9b0.png)
-</br></br>
-
-*Delete confirmation for created note*</br></br>
-![screenshot_20181002-232924](https://user-images.githubusercontent.com/39777674/46367451-3965bf00-c69b-11e8-9d8a-8fea4dfda6b4.png)
+<img width="371" alt="Screenshot 2019-06-21 at 7 03 37 PM" src="https://user-images.githubusercontent.com/39777674/59926376-d0f08500-9457-11e9-8b16-5cad9d3566a2.png">
 
 
+</br>
 
-</br></br>
+*New note creation*  </br>
+
+<img width="365" alt="Screenshot 2019-06-21 at 6 46 55 PM" src="https://user-images.githubusercontent.com/39777674/59926492-08f7c800-9458-11e9-8e43-32c63a03934a.png">
+
+</br>
+
+*New note*  </br>
+
+<img width="373" alt="Screenshot 2019-06-21 at 6 48 57 PM" src="https://user-images.githubusercontent.com/39777674/59926531-1dd45b80-9458-11e9-95b5-ce0b9da926d1.png">
+
+</br>
+
+*View note*  </br>
+
+<img width="374" alt="Screenshot 2019-06-21 at 6 52 01 PM" src="https://user-images.githubusercontent.com/39777674/59926640-5d02ac80-9458-11e9-9446-08604af61361.png">
+
+
+</br>
+
+*Delete confirmation for created note*  </br>
+
+<img width="365" alt="Screenshot 2019-06-21 at 6 52 59 PM" src="https://user-images.githubusercontent.com/39777674/59926689-760b5d80-9458-11e9-9c1b-1a6f712fffc2.png">
+
+<br>
+
+*Edit already created note*  </br>
+
+<img width="363" alt="Screenshot 2019-06-21 at 6 54 59 PM" src="https://user-images.githubusercontent.com/39777674/59926886-e74b1080-9458-11e9-84d7-fde842521469.png">
+
+</br>
+
+
+*Long content note*  </br>
+
+<img width="367" alt="Screenshot 2019-06-21 at 6 52 14 PM" src="https://user-images.githubusercontent.com/39777674/59926958-0d70b080-9459-11e9-8e1c-88c1a09fd4cb.png">
+
+<br>
 
