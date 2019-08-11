@@ -1,13 +1,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.3.40'
+    ext.kotlin_version = '1.3.41'
     ext.room_version = '2.1.0'
     ext.lifecycle_version = '2.0.0'
-    ext.build_tools_version = '3.4.0'
-    ext.andx_app_appcompat = '1.1.0-beta01'
-    ext.andx_constraint = '2.0.0-beta1'
-    ext.material_design = '1.1.0-alpha07'
+    ext.build_tools_version = '3.4.2'
+    ext.andx_app_appcompat = '1.1.0-rc01'
+    ext.andx_constraint = '2.0.0-beta2'
+    ext.material_design = '1.1.0-alpha09'
     ext.andx_legacy_support = '1.0.0'
     ext.anko_version = '0.10.4'
 

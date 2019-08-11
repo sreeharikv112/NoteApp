@@ -18,7 +18,7 @@ class SplashActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         actionBar?.setDisplayHomeAsUpEnabled(true)
-        mHideHandler.postDelayed(Runnable { delayedAction() },AUTO_HIDE_DELAY_MILLIS)
+        mHideHandler.postDelayed({ delayedAction() },AUTO_HIDE_DELAY_MILLIS)
     }
 
     private fun delayedAction(){
@@ -28,6 +28,6 @@ class SplashActivity : Activity() {
     }
 
     companion object {
-       private val AUTO_HIDE_DELAY_MILLIS = 3000L
+       private val AUTO_HIDE_DELAY_MILLIS = 1000L
     }
 }

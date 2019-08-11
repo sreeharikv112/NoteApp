@@ -7,7 +7,7 @@ import com.noteapp.models.NoteModel
 @Dao
 interface NoteModelDao {
 
-    @Query("SELECT * FROM NoteModel")
+    @Query("SELECT * FROM NoteModel ORDER BY dateSaved DESC")
     fun getAllNotes(): LiveData<List<NoteModel>>
 
     @Query("SELECT * FROM NoteModel WHERE id = :id")

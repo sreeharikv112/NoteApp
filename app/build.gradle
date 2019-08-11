@@ -48,5 +48,4 @@ dependencies {
     //Anko
     implementation "org.jetbrains.anko:anko-commons:$anko_version"
 
-
 }

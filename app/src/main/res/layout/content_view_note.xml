@@ -8,12 +8,16 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:layout_margin="@dimen/margin_10"
     >
-
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.MaterialComponents.CardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="@dimen/margin_10"
+        android:id="@+id/contentBackground"
         >
         <TextView
             android:layout_width="wrap_content"
@@ -23,6 +27,7 @@
             android:layout_gravity="center_horizontal"
             android:textStyle="bold"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:layout_margin="@dimen/margin_10"
             />
 
         <TextView
@@ -31,10 +36,11 @@
             android:id="@+id/noteContent"
             android:text=""
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:layout_margin="@dimen/margin_10"
             />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-
+    </com.google.android.material.card.MaterialCardView>
 </androidx.core.widget.NestedScrollView>

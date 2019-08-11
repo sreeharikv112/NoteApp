@@ -4,10 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.noteapp.models.NoteModel
 
 @Database(entities = [NoteModel::class], version = 1, exportSchema = false)
-
+@TypeConverters(TimeStampConverter::class)
 abstract class NoteDataBase : RoomDatabase(){
 
     abstract fun noteItemAndNotesModel(): NoteModelDao

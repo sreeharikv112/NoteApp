@@ -31,7 +31,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
         mRecyclerView = findViewById(R.id.listOfNoteRecyclerView)
         mRecyclerView.layoutManager = LinearLayoutManager(this)
-        mNoteAdapter = NoteAdapter(noteList = ArrayList<NoteModel>(),
+        mNoteAdapter = NoteAdapter(this,noteList = ArrayList<NoteModel>(),
                 onClickListener = this,
                 onDeletePressed = DeleteBtnClick(),
                 onEditPressed = EditBtnClick()
@@ -56,7 +56,9 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         mNoteModel = v?.getTag() as NoteModel
         val intent = Intent(this@MainActivity, ViewNote::class.java)
-        intent.putExtra("selectedNote",mNoteModel)
+        val bundle = Bundle()
+        bundle.putSerializable("selectedNote",mNoteModel)
+        intent.putExtras(bundle)
         startActivity(intent)
     }
 
@@ -77,7 +79,9 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         override fun onClick(v: View?) {
             mNoteModel = v?.getTag() as NoteModel
             val intent = Intent(this@MainActivity, MakeNoteActivity::class.java)
-            intent.putExtra("selectedNote",mNoteModel)
+            val bundle = Bundle()
+            bundle.putSerializable("selectedNote",mNoteModel)
+            intent.putExtras(bundle)
             intent.putExtra("editAction",true)
             startActivity(intent)
         }
