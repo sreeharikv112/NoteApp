@@ -31,7 +31,7 @@ open class BaseActivity : AppCompatActivity(), AlertCallBack {
         dialogBuilder.setPositiveButton(positiveBtnText) { dialog, whichButton -> handlePositiveAlertCallBack() }
         dialogBuilder.setNegativeButton(negativeBtnText) { dialog, whichButton -> handleNegativeAlertCallBack() }
         mCallBackAlertDialog = dialogBuilder.create()
-        mCallBackAlertDialog.setCancelable(false)
+        mCallBackAlertDialog.setCancelable(true)
         mCallBackAlertDialog.show()
     }
 

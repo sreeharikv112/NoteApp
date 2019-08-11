@@ -10,5 +10,7 @@
     <color name="light_green">#00cc44</color>
     <color name="light_blue">#8080ff</color>
     <color name="light_yellow">#cccc00</color>
+    <color name="splash_back">#ffe0b2</color>
+
 
 </resources>

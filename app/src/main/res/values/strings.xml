@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Notes</string>
+    <string name="app_name">Safe Note</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_add_note">AddNoteActivity</string>
     <string name="note_title">Note Title</string>
