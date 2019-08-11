@@ -23,6 +23,12 @@
         <activity
             android:name=".uicomponents.activities.makenote.MakeNoteActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".uicomponents.activities.enterpin.PinActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+        <activity android:name=".uicomponents.activities.settings.SettingsActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity
             android:name=".uicomponents.activities.splash.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

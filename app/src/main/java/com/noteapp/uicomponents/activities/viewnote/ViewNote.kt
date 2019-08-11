@@ -28,6 +28,8 @@ class ViewNote : BaseActivity() {
         actionBar!!.title = getString(com.noteapp.R.string.view_note)
         setSupportActionBar(actionBar)
 
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
         linearBackground = findViewById(com.noteapp.R.id.contentBackground)
 
         mNoteModel = intent.extras!!.getSerializable("selectedNote") as NoteModel
@@ -70,6 +72,11 @@ class ViewNote : BaseActivity() {
                 }
             }
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.noteapp.R
+
 import com.noteapp.models.AddNoteViewModel
 import com.noteapp.models.NoteModel
 import com.noteapp.models.UpdateNoteViewModel
@@ -17,6 +18,9 @@ import kotlinx.android.synthetic.main.activity_note.*
 
 import kotlinx.android.synthetic.main.content_make_note.*
 import java.util.*
+
+
+
 
 class MakeNoteActivity : BaseActivity() ,View.OnClickListener {
 
@@ -41,6 +45,8 @@ class MakeNoteActivity : BaseActivity() ,View.OnClickListener {
         val actionBar = toolbar
         actionBar!!.title = getString(R.string.create_note)
         setSupportActionBar(actionBar)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
         fab_make_note.setOnClickListener(this)
         mAddNoteModel = AddNoteViewModel(application)
         mEditNoteModel = UpdateNoteViewModel(application)
@@ -77,11 +83,14 @@ class MakeNoteActivity : BaseActivity() ,View.OnClickListener {
         mBtnYellow!!.backgroundTintList = ContextCompat.getColorStateList(this@MakeNoteActivity, android.R.color.holo_orange_light)
         mBtnYellow!!.setOnClickListener(this)
 
-        mBtnDefault = findViewById(R.id.btnDefault)
+        mBtnDefault = findViewById(com.noteapp.R.id.btnDefault)
         mBtnDefault!!.backgroundTintList = ContextCompat.getColorStateList(this@MakeNoteActivity, android.R.color.transparent)
         mBtnDefault!!.setOnClickListener(this)
+    }
 
-
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

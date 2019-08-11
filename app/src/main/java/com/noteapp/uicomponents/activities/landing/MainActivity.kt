@@ -3,6 +3,8 @@ package com.noteapp.uicomponents.activities.landing
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -11,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.noteapp.R
 import com.noteapp.models.NoteListViewModel
 import com.noteapp.models.NoteModel
+import com.noteapp.uicomponents.activities.enterpin.PinActivity
 import com.noteapp.uicomponents.activities.makenote.MakeNoteActivity
+import com.noteapp.uicomponents.activities.settings.SettingsActivity
 import com.noteapp.uicomponents.activities.viewnote.ViewNote
 import com.noteapp.uicomponents.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -45,6 +49,25 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         mNoteListViewModel = ViewModelProviders.of(this).get(NoteListViewModel::class.java)
         mNoteListViewModel.mNoteList.observe(this@MainActivity, Observer { noteModels -> mNoteAdapter.addNote(noteModels) })
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        var inflator = menuInflater
+        inflator.inflate(R.menu.menu_main,menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item!!.itemId)
+        {
+            R.id.action_settings ->
+                goToSettings()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun goToSettings() {
+        startActivity(Intent(this@MainActivity, PinActivity::class.java))
     }
 
     private fun invokeNewNoteActivity() {
