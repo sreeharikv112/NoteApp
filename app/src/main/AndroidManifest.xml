@@ -29,6 +29,9 @@
         <activity android:name=".uicomponents.activities.settings.SettingsActivity"
             android:theme="@style/AppTheme.NoActionBar"
             />
+        <activity android:name=".uicomponents.activities.setuppin.SetupSecurity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity
             android:name=".uicomponents.activities.splash.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

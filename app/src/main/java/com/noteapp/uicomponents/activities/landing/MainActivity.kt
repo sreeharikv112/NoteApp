@@ -67,7 +67,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun goToSettings() {
-        startActivity(Intent(this@MainActivity, PinActivity::class.java))
+        startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
     }
 
     private fun invokeNewNoteActivity() {
