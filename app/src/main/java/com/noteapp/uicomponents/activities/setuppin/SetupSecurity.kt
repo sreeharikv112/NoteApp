@@ -1,6 +1,7 @@
 package com.noteapp.uicomponents.activities.setuppin
 
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -11,8 +12,11 @@ import com.noteapp.R
 import com.noteapp.uicomponents.base.BaseActivity
 import com.noteapp.uicomponents.common.PinEntryEditText
 import kotlinx.android.synthetic.main.activity_note.*
+import kotlinx.android.synthetic.main.content_make_note.*
+import kotlinx.android.synthetic.main.content_security.*
 
-class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener{
+class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.OnClickListener{
+
 
     lateinit var mSpinnerQstnOne : AppCompatSpinner
     lateinit var mPin : PinEntryEditText
@@ -43,6 +47,7 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener{
         mSpinnerQstnOne = findViewById(R.id.securityQOne)
         mUserAnswer = findViewById(R.id.edtUserAnswer)
         mSaveButton = findViewById(R.id.btnSave)
+        mSaveButton.setOnClickListener(this)
 
         var questionOneAdapter  = ArrayAdapter(this,android.R.layout.simple_spinner_item,
                 mQuestionOne)
@@ -58,6 +63,44 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener{
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         mAppLogger.debug(mTag,"Selected item ${mQuestionOne[position]}")
         mSelectedSecurityQuestion = mQuestionOne[position]
+    }
+
+    override fun onClick(v: View?) {
+        if(v!!.id == R.id.btnSave){
+
+            if( TextUtils.isEmpty(mPin.text) || mPin.text?.length !=4){
+                showToast("Please enter valid PIN")
+                mPin.requestFocus()
+                return
+            }
+            else if(TextUtils.isEmpty(mPinConfirm.text) || mPinConfirm.text?.length !=4){
+                showToast("Please enter valid confirm PIN")
+                mPinConfirm.requestFocus()
+                return
+            }
+            else if( !(mPin.text.toString() == mPinConfirm.text.toString())!!){
+                showToast("PIN and Confirm PIN does not match")
+                mPinConfirm.requestFocus()
+                return
+            }
+            else if(mSelectedSecurityQuestion == mQuestionOne[0]){
+                mSpinnerQstnOne.performClick()
+            }
+            else if (!mAppUtils.isInputEditTextFilled(edtUserAnswer!!, addAnswerLayout!!, getString(R.string.enter_security_answer))) {
+                mUserAnswer.requestFocus()
+                return
+            }
+            else if(edtUserAnswer.text!!.length < 4){
+                showToast("Answer should be of 4 letter minimum")
+                edtUserAnswer.requestFocus()
+
+                return
+            }
+            else{
+                showToast("Proceed!!!")
+            }
+
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -27,7 +27,7 @@
     <string name="new_pin">New PIN</string>
     <string name="confirm_new_pin">Confirm New PIN</string>
     <string name="answer">Answer</string>
-
+    <string name="enter_security_answer">Please enter answer for selected question</string>
     <string-array name="question_one_arrays">
         <item>Name of first Pet</item>
         <item>Favourite destination</item>
