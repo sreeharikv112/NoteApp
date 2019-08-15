@@ -9,7 +9,7 @@ class AddNoteViewModel(application: Application) : AndroidViewModel(application)
 
     private var mNoteDataBase: NoteDataBase = NoteDataBase.getInstance(getApplication())!!
 
-    fun addNote(noteModel: NoteModel ){
+    fun addNote(noteModel: NoteModel){
         var dbUtils= DBUtils()
         dbUtils.addNote(mNoteDataBase,noteModel)
     }

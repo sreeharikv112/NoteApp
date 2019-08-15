@@ -6,7 +6,6 @@ import java.io.Serializable
 import java.util.*
 
 @Entity
-
 data class NoteModel(@PrimaryKey(autoGenerate = true)
                      var id:Int?,
                      var noteTitle:String,

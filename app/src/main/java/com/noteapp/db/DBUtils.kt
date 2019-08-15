@@ -1,7 +1,9 @@
 package com.noteapp.db
 
+import android.app.Application
 import com.noteapp.common.AppLogger
 import com.noteapp.models.NoteModel
+import com.noteapp.models.SecurityQuestionModel
 import org.jetbrains.anko.doAsync
 
 
@@ -32,6 +34,25 @@ class DBUtils {
             noteDataBase.noteItemAndNotesModel().updateNote(noteModel)
             mAppLogger.debug(TAG,"noteModel updated")
         }
-
     }
+
+    fun setOrUpdateSecurityQstn(noteDataBase:NoteDataBase,securityQuestionModel: SecurityQuestionModel){
+        mAppLogger.debug(TAG,"updateSecurityQstn")
+        doAsync {
+            noteDataBase.noteItemAndNotesModel().insertOrUpdateSecurityQuestion(securityQuestionModel)
+            mAppLogger.debug(TAG,"security qstn updated")
+        }
+    }
+
+    /*fun getSecurityQstn(noteDataBase:NoteDataBase) : SecurityQuestionModel{
+        mAppLogger.debug(TAG,"getSecurityQstn")
+
+        var securityQstn = null
+        doAsync {
+            securityQstn =  noteDataBase.noteItemAndNotesModel().getSecurityQuestion()
+        }
+
+        return securityQstn
+    }*/
+
 }

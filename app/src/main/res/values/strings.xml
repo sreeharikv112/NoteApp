@@ -25,7 +25,7 @@
     <string name="request_pin_start">Ask PIN at start</string>
     <string name="update_pin_btn">Update PIN</string>
     <string name="new_pin">New PIN</string>
-    <string name="confirm_new_pin">Confirm New PIN</string>
+    <string name="confirm_new_pin">Confirm PIN</string>
     <string name="answer">Answer</string>
     <string name="enter_security_answer">Please enter answer for selected question</string>
     <string-array name="question_one_arrays">

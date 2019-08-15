@@ -3,6 +3,7 @@ package com.noteapp.db
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.noteapp.models.NoteModel
+import com.noteapp.models.SecurityQuestionModel
 
 @Dao
 interface NoteModelDao {
@@ -21,6 +22,15 @@ interface NoteModelDao {
 
     @Update
     fun updateNote(noteModel: NoteModel)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertOrUpdateSecurityQuestion(securityQuestionModel: SecurityQuestionModel)
+
+    @Query("SELECT * FROM SecurityQuestionModel")
+    fun getSecurityQuestion(): SecurityQuestionModel
+
+    /*@Update
+    fun updateSecurityQuestion(securityQuestionModel: SecurityQuestionModel)*/
 }
 
 

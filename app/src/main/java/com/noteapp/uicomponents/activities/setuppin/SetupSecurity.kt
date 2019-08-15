@@ -2,18 +2,24 @@ package com.noteapp.uicomponents.activities.setuppin
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.AppCompatSpinner
+import androidx.lifecycle.LiveData
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.noteapp.R
+import com.noteapp.models.SecurityQuestionModel
+import com.noteapp.models.SecurityQuestionViewModel
 import com.noteapp.uicomponents.base.BaseActivity
 import com.noteapp.uicomponents.common.PinEntryEditText
 import kotlinx.android.synthetic.main.activity_note.*
 import kotlinx.android.synthetic.main.content_make_note.*
 import kotlinx.android.synthetic.main.content_security.*
+import org.jetbrains.anko.doAsync
+import java.lang.Exception
 
 class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.OnClickListener{
 
@@ -26,6 +32,8 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
     var mQuestionOne = mutableListOf<String>()
     val mTag = "SetupSecurity"
     lateinit var mSelectedSecurityQuestion : String
+    lateinit var securityQstnVM : SecurityQuestionViewModel
+    lateinit var mSecurityData : SecurityQuestionModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,10 +43,13 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
         setSupportActionBar(actionBar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
+        securityQstnVM = SecurityQuestionViewModel(application)
+
         mQuestionOne.add("Name of first Pet")
         mQuestionOne.add("Favourite destination")
         mQuestionOne.add("Name of first Car")
         mQuestionOne.add("First job")
+
 
         mSelectedSecurityQuestion = mQuestionOne.first()
 
@@ -74,7 +85,7 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
                 return
             }
             else if(TextUtils.isEmpty(mPinConfirm.text) || mPinConfirm.text?.length !=4){
-                showToast("Please enter valid confirm PIN")
+                showToast("Please confirm PIN")
                 mPinConfirm.requestFocus()
                 return
             }
@@ -91,13 +102,38 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
                 return
             }
             else if(edtUserAnswer.text!!.length < 4){
-                showToast("Answer should be of 4 letter minimum")
+                showToast("Answer should be of minimum 4 character")
                 edtUserAnswer.requestFocus()
-
                 return
             }
             else{
-                showToast("Proceed!!!")
+
+                //doAsync {
+                    //mSecurityData = SecurityQuestionViewModel(application).getSecurityQuestion()
+                try {
+                    mSecurityData = securityQstnVM.getSecurityQuestion()
+                    if(mSecurityData != null) {
+                        mAppLogger.debug(mTag,"mSecurityData.answer = ${mSecurityData.answer}")
+                        mAppLogger.debug(mTag,"mSecurityData.key = ${mSecurityData.key}")
+                        mAppLogger.debug(mTag,"mSecurityData.question = ${mSecurityData.question}")
+                    }
+                    else{
+                        mAppLogger.debug(mTag,"mSecurityData.value is null ")
+                    }
+                }catch(err: Exception){
+                    mAppLogger.error(mTag,"mSecurityData is null ")
+                }
+                    var securityQstn = SecurityQuestionModel(1,
+                            mPinConfirm.text.toString().toInt(),
+                            mSelectedSecurityQuestion,
+                            edtUserAnswer.text.toString())
+
+                securityQstnVM.insertOrUpdateSecurityQuestion(securityQstn)
+
+                mAppLogger.debug(mTag,"Completed !!!")
+                //}
+
+                //showToast("Updated Security Question")
             }
 
         }

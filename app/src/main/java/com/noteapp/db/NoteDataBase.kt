@@ -6,8 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.noteapp.models.NoteModel
+import com.noteapp.models.SecurityQuestionModel
 
-@Database(entities = [NoteModel::class], version = 1, exportSchema = false)
+@Database(entities = [NoteModel::class, SecurityQuestionModel::class], version = 1, exportSchema = false)
 @TypeConverters(TimeStampConverter::class)
 abstract class NoteDataBase : RoomDatabase(){
 
