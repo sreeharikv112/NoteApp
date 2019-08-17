@@ -1,9 +1,15 @@
 package com.noteapp.db
 
-import android.app.Application
 import com.noteapp.common.AppLogger
 import com.noteapp.models.NoteModel
 import com.noteapp.models.SecurityQuestionModel
+import com.noteapp.uicomponents.activities.setuppin.IGetSecurityQuestionListener
+import com.noteapp.uicomponents.activities.setuppin.IUpdateSecurityListener
+import io.reactivex.Completable
+import io.reactivex.CompletableObserver
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import org.jetbrains.anko.doAsync
 
 
@@ -36,23 +42,47 @@ class DBUtils {
         }
     }
 
-    fun setOrUpdateSecurityQstn(noteDataBase:NoteDataBase,securityQuestionModel: SecurityQuestionModel){
-        mAppLogger.debug(TAG,"updateSecurityQstn")
-        doAsync {
-            noteDataBase.noteItemAndNotesModel().insertOrUpdateSecurityQuestion(securityQuestionModel)
-            mAppLogger.debug(TAG,"security qstn updated")
-        }
+    fun fetchSecurityQuestion(noteDataBase:NoteDataBase,listenerIGet: IGetSecurityQuestionListener){
+        var savedSecurityQstn : SecurityQuestionModel? = null
+        Completable.fromAction {
+            savedSecurityQstn = noteDataBase.noteItemAndNotesModel().getSecurityQuestion()
+        }.observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io()).subscribe(object : CompletableObserver {
+
+                    override fun onSubscribe(d: Disposable) {}
+
+                    override fun onComplete() {
+                        mAppLogger.debug(TAG,"fetchSecurityQuestion SUCCESS" )
+                        listenerIGet.fetchSecurityQstnListener(savedSecurityQstn)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        mAppLogger.debug(TAG,"fetchSecurityQuestion ERROR" )
+                        listenerIGet.fetchSecurityQstnListener(null)
+                    }
+                })
     }
 
-    /*fun getSecurityQstn(noteDataBase:NoteDataBase) : SecurityQuestionModel{
-        mAppLogger.debug(TAG,"getSecurityQstn")
+    fun setOrUpdateSecurityQstn(noteDataBase:NoteDataBase,securityQuestionModel: SecurityQuestionModel,
+                                listener: IUpdateSecurityListener){
+        Completable.fromAction{
+            mAppLogger.debug(TAG,"updateSecurityQstn")
+            noteDataBase.noteItemAndNotesModel().insertOrUpdateSecurityQuestion(securityQuestionModel)
 
-        var securityQstn = null
-        doAsync {
-            securityQstn =  noteDataBase.noteItemAndNotesModel().getSecurityQuestion()
-        }
+        }.observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io()).subscribe(object : CompletableObserver {
 
-        return securityQstn
-    }*/
+                    override fun onSubscribe(d: Disposable) {}
 
+                    override fun onComplete() {
+                        mAppLogger.debug(TAG,"setOrUpdateSecurityQstn SUCCESS" )
+                        listener.didSecurityQuestionUpdated(true)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        mAppLogger.debug(TAG,"setOrUpdateSecurityQstn ERROR" )
+                        listener.didSecurityQuestionUpdated(false)
+                    }
+                })
+    }
 }

@@ -1,6 +1,7 @@
 package com.noteapp.uicomponents.activities.enterpin
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 
@@ -10,18 +11,23 @@ import kotlinx.android.synthetic.main.activity_note.*
 import android.text.Editable
 import android.text.TextWatcher
 import com.noteapp.R
+import android.app.Activity
+
+
+
 
 
 class PinActivity : BaseActivity() {
 
     lateinit var mOtpEditText : PinEntryEditText
     lateinit var mInputMethodManager : InputMethodManager
+    val resultIntent = Intent()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pin)
         val actionBar = toolbar
-        actionBar!!.title = getString(R.string.create_pin)
+        actionBar!!.title = getString(R.string.enter_pin)
         setSupportActionBar(actionBar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
@@ -45,13 +51,28 @@ class PinActivity : BaseActivity() {
             override fun afterTextChanged(s: Editable) {
                 if (s.length == 4) {
                     mInputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+                    sendDataBack(s.toString())
                 }
             }
         })
+    }
 
+    fun sendDataBack(data:String){
+
+        if(!data.isEmpty()){
+
+            resultIntent.putExtra(PIN_ENTERED,data.toInt())
+            setResult(Activity.RESULT_OK, resultIntent)
+            finish()
+        }
+    }
+
+    companion object {
+        val PIN_ENTERED = "USER_PIN"
     }
 
     override fun onSupportNavigateUp(): Boolean {
+        setResult(Activity.RESULT_CANCELED)
         finish()
         return true
     }

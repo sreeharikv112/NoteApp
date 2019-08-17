@@ -2,12 +2,10 @@ package com.noteapp.uicomponents.activities.setuppin
 
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.AppCompatSpinner
-import androidx.lifecycle.LiveData
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.noteapp.R
@@ -16,21 +14,19 @@ import com.noteapp.models.SecurityQuestionViewModel
 import com.noteapp.uicomponents.base.BaseActivity
 import com.noteapp.uicomponents.common.PinEntryEditText
 import kotlinx.android.synthetic.main.activity_note.*
-import kotlinx.android.synthetic.main.content_make_note.*
 import kotlinx.android.synthetic.main.content_security.*
-import org.jetbrains.anko.doAsync
 import java.lang.Exception
 
-class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.OnClickListener{
-
-
+class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.OnClickListener,IGetSecurityQuestionListener
+,IUpdateSecurityListener
+{
     lateinit var mSpinnerQstnOne : AppCompatSpinner
     lateinit var mPin : PinEntryEditText
     lateinit var mPinConfirm : PinEntryEditText
     lateinit var mUserAnswer : TextInputEditText
     lateinit var mSaveButton : MaterialButton
     var mQuestionOne = mutableListOf<String>()
-    val mTag = "SetupSecurity"
+    val mTag = "SetupIGetSecurity"
     lateinit var mSelectedSecurityQuestion : String
     lateinit var securityQstnVM : SecurityQuestionViewModel
     lateinit var mSecurityData : SecurityQuestionModel
@@ -44,7 +40,7 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         securityQstnVM = SecurityQuestionViewModel(application)
-
+        mQuestionOne.add("Please Select")
         mQuestionOne.add("Name of first Pet")
         mQuestionOne.add("Favourite destination")
         mQuestionOne.add("Name of first Car")
@@ -107,35 +103,46 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
                 return
             }
             else{
-
-                //doAsync {
-                    //mSecurityData = SecurityQuestionViewModel(application).getSecurityQuestion()
-                try {
-                    mSecurityData = securityQstnVM.getSecurityQuestion()
-                    if(mSecurityData != null) {
-                        mAppLogger.debug(mTag,"mSecurityData.answer = ${mSecurityData.answer}")
-                        mAppLogger.debug(mTag,"mSecurityData.key = ${mSecurityData.key}")
-                        mAppLogger.debug(mTag,"mSecurityData.question = ${mSecurityData.question}")
-                    }
-                    else{
-                        mAppLogger.debug(mTag,"mSecurityData.value is null ")
-                    }
-                }catch(err: Exception){
-                    mAppLogger.error(mTag,"mSecurityData is null ")
-                }
-                    var securityQstn = SecurityQuestionModel(1,
-                            mPinConfirm.text.toString().toInt(),
-                            mSelectedSecurityQuestion,
-                            edtUserAnswer.text.toString())
-
-                securityQstnVM.insertOrUpdateSecurityQuestion(securityQstn)
-
-                mAppLogger.debug(mTag,"Completed !!!")
-                //}
-
-                //showToast("Updated Security Question")
+                mAppLogger.debug(mTag,"calling getSecurityQuestion!!")
+                securityQstnVM.getSecurityQuestion(this)
             }
 
+        }
+    }
+
+    override fun fetchSecurityQstnListener(securityQuestion: SecurityQuestionModel?) {
+        try {
+            mAppLogger.debug(mTag,"question == ${securityQuestion!!.question}")
+            mAppLogger.debug(mTag,"answer == ${securityQuestion!!.answer}")
+
+            if(securityQuestion != null) {
+                mSecurityData = securityQuestion
+                mAppLogger.debug(mTag,"mSecurityData.answer = ${mSecurityData.answer}")
+                mAppLogger.debug(mTag,"mSecurityData.key = ${mSecurityData.key}")
+                mAppLogger.debug(mTag,"mSecurityData.question = ${mSecurityData.question}")
+            }
+            else{
+                mAppLogger.debug(mTag,"mSecurityData.value is null ")
+            }
+        }catch(err: Exception){
+            mAppLogger.error(mTag,"mSecurityData is null ")
+        }
+        var securityQstn = SecurityQuestionModel(1,
+                mPinConfirm.text.toString().toInt(),
+                mSelectedSecurityQuestion,
+                edtUserAnswer.text.toString())
+
+        securityQstnVM.insertOrUpdateSecurityQuestion(securityQstn,this)
+
+        mAppLogger.debug(mTag,"Completed !!!")
+    }
+
+    override fun didSecurityQuestionUpdated(status: Boolean) {
+        if(status){
+            showToast("Security Settings updated")
+            finish()
+        }else{
+            showToast("Could not update Security settings. Pls try again.")
         }
     }
 

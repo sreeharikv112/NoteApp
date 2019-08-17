@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context=".uicomponents.activities.setuppin.SetupSecurity"
+    tools:context=".uicomponents.activities.setuppin.SetupIGetSecurity"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_security"
     >
@@ -106,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/edtUserAnswer"
                 android:maxLines="1"
-                android:maxLength="100"
+                android:maxLength="50"
                 android:hint="@string/answer"/>
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -1,6 +1,7 @@
 package com.noteapp.uicomponents.base
 
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.Gravity
@@ -10,6 +11,8 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.noteapp.R
 import com.noteapp.common.AppLogger
 import com.noteapp.common.AppUtils
 import com.noteapp.uicomponents.activities.uiinterfaces.AlertCallBack
@@ -33,6 +36,18 @@ open class BaseActivity : AppCompatActivity(), AlertCallBack {
         mCallBackAlertDialog = dialogBuilder.create()
         mCallBackAlertDialog.setCancelable(true)
         mCallBackAlertDialog.show()
+    }
+
+    fun showAlert(message :Int, positiveBtnText: Int, negativeBtnText:Int,
+                  positiveListener: DialogInterface.OnClickListener,
+                  negativeListener: DialogInterface.OnClickListener
+    ) {
+        MaterialAlertDialogBuilder(this)
+                .setTitle(getString(R.string.alert_title))
+                .setMessage(message)
+                .setPositiveButton(positiveBtnText, positiveListener)
+                .setNegativeButton(negativeBtnText, negativeListener)
+                .show()
     }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {

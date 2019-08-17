@@ -10,6 +10,9 @@ buildscript {
     ext.material_design = '1.1.0-alpha09'
     ext.andx_legacy_support = '1.0.0'
     ext.anko_version = '0.10.4'
+    ext.couroutines_version = '1.3.0-M2'
+    ext.rxKotlin = '2.4.0'
+    ext.rxAndroid = '2.0.1'
 
     repositories {
         google()
