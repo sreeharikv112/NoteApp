@@ -50,6 +50,19 @@ open class BaseActivity : AppCompatActivity(), AlertCallBack {
                 .show()
     }
 
+
+    fun showAlertCustomView(positiveBtnText: Int, negativeBtnText:Int,
+                  positiveListener: DialogInterface.OnClickListener,
+                  negativeListener: DialogInterface.OnClickListener
+    ) {
+        MaterialAlertDialogBuilder(this)
+                .setTitle(getString(R.string.alert_title))
+                .setView(R.layout.content_security_resolution)
+                .setPositiveButton(positiveBtnText, positiveListener)
+                .setNegativeButton(negativeBtnText, negativeListener)
+                .show()
+    }
+
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
         if (event.action == MotionEvent.ACTION_DOWN) {
             val v = currentFocus

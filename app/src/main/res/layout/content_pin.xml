@@ -37,4 +37,15 @@
         android:layout_marginTop="@dimen/margin_20"
         android:layout_below="@id/txtPin"
         />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnSubmit"
+        android:layout_below="@id/otpView"
+        android:text="Submit"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/margin_20"
+        />
 </RelativeLayout>

@@ -12,16 +12,25 @@ import android.text.Editable
 import android.text.TextWatcher
 import com.noteapp.R
 import android.app.Activity
+import android.view.View
+import android.widget.Button
+import com.noteapp.uicomponents.activities.settings.SecurityResolutionDialog
 
 
+class PinActivity : BaseActivity(), View.OnClickListener {
 
-
-
-class PinActivity : BaseActivity() {
 
     lateinit var mOtpEditText : PinEntryEditText
     lateinit var mInputMethodManager : InputMethodManager
+    lateinit var mSubmit : Button
     val resultIntent = Intent()
+    var mPreviousPIN = -1
+    lateinit var mPreviousQSTN : String
+    lateinit var mPreviousANSWER : String
+    var mWrongTrialCount = 0
+    val TAG = "PinActivity"
+    lateinit var mSubmittedPIN : String
+    lateinit var mSecretQstnDialog : SecurityResolutionDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +40,16 @@ class PinActivity : BaseActivity() {
         setSupportActionBar(actionBar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
+        mPreviousPIN = intent.getIntExtra("LAST_PIN",-1)
+        mPreviousQSTN = intent.getStringExtra("QUESTION")
+        mPreviousANSWER = intent.getStringExtra("ANSWER")
+
+        mSecretQstnDialog =  SecurityResolutionDialog(mPreviousQSTN)
+        mAppLogger.debug(TAG,"mPreviousPIN === $mPreviousPIN")
+
+        mSubmit = findViewById(R.id.btnSubmit)
+        mSubmit.setOnClickListener(this)
+        mSubmittedPIN = ""
         mOtpEditText = findViewById(R.id.otpView)
         mOtpEditText.requestFocus()
         mInputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -51,16 +70,59 @@ class PinActivity : BaseActivity() {
             override fun afterTextChanged(s: Editable) {
                 if (s.length == 4) {
                     mInputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
-                    sendDataBack(s.toString())
+                    //sendDataBack(s.toString())
+                    //compareData(s.toString())
+                    mSubmittedPIN = s.toString()
                 }
             }
         })
     }
 
+
+    override fun onClick(v: View?) {
+        if(v!!.id == R.id.btnSubmit){
+
+            compareData(mSubmittedPIN)
+
+        }
+    }
+
+    fun compareData(data:String){
+        if(!data.isEmpty()){
+
+
+            if(mPreviousPIN.compareTo(data.toInt())==0){
+                //PIN Success
+                showToast("Success")
+            }else {
+                mWrongTrialCount ++
+
+                if(mWrongTrialCount < 3)
+                {
+                    showToast("Wrong PIN entered! Pls try again")
+                    mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+                }
+            }
+
+            if(mWrongTrialCount >= 3){
+                //showToast("Three times wrong data")
+                //show the dialog with forgot password option
+
+                val fragmentTransitionImpl = supportFragmentManager.beginTransaction()
+                val previousInstance = supportFragmentManager.findFragmentByTag("QSTNFRAG")
+                if(previousInstance != null){
+                    fragmentTransitionImpl.remove(previousInstance)
+                }
+                fragmentTransitionImpl.addToBackStack(null)
+
+                mSecretQstnDialog.show(fragmentTransitionImpl,"QSTNFRAG")
+            }
+        }
+    }
+
     fun sendDataBack(data:String){
 
         if(!data.isEmpty()){
-
             resultIntent.putExtra(PIN_ENTERED,data.toInt())
             setResult(Activity.RESULT_OK, resultIntent)
             finish()

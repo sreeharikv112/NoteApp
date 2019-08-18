@@ -29,6 +29,7 @@ class SettingsActivity : BaseActivity() , CompoundButton.OnCheckedChangeListener
     var mPreviousPIN : Int = -1
     val mTag = "SettingsActivity"
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -70,7 +71,11 @@ class SettingsActivity : BaseActivity() , CompoundButton.OnCheckedChangeListener
                 mPreviousPIN = (securityQuestion.key).toInt()
                 mAppLogger.debug(mTag, "mPreviousPIN = $mPreviousPIN")
                 val intent = Intent(this,PinActivity::class.java)
-                startActivityForResult(intent,TASK_ENTER_PIN)
+                intent.putExtra("LAST_PIN",mPreviousPIN)
+                intent.putExtra("QUESTION",securityQuestion.question)
+                intent.putExtra("ANSWER",securityQuestion.answer)
+                startActivity(intent)
+                //startActivityForResult(intent,TASK_ENTER_PIN)
             }
             else{
                 showSecurityActivity()
@@ -88,6 +93,11 @@ class SettingsActivity : BaseActivity() , CompoundButton.OnCheckedChangeListener
         if(v!!.id == R.id.updatePIN){
             securityQstnVM.getSecurityQuestion(this)
         }
+    }
+
+    fun demo(){
+        /*var dialog =  SecurityResolutionDialog()
+        dialog.show(supportFragmentManager,"")*/
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
