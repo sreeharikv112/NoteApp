@@ -17,9 +17,7 @@ import android.widget.Button
 import com.noteapp.uicomponents.activities.settings.SecurityResolutionDialog
 
 
-class PinActivity : BaseActivity(), View.OnClickListener {
-
-
+class PinActivity : BaseActivity(), View.OnClickListener , SecurityResolutionDialog.UserEnteredAnswer {
     lateinit var mOtpEditText : PinEntryEditText
     lateinit var mInputMethodManager : InputMethodManager
     lateinit var mSubmit : Button
@@ -44,8 +42,10 @@ class PinActivity : BaseActivity(), View.OnClickListener {
         mPreviousQSTN = intent.getStringExtra("QUESTION")
         mPreviousANSWER = intent.getStringExtra("ANSWER")
 
-        mSecretQstnDialog =  SecurityResolutionDialog(mPreviousQSTN)
+        mSecretQstnDialog =  SecurityResolutionDialog(mPreviousQSTN,mPreviousANSWER,this)
         mAppLogger.debug(TAG,"mPreviousPIN === $mPreviousPIN")
+        mAppLogger.debug(TAG,"mPreviousANSWER === $mPreviousANSWER")
+
 
         mSubmit = findViewById(R.id.btnSubmit)
         mSubmit.setOnClickListener(this)
@@ -89,8 +89,6 @@ class PinActivity : BaseActivity(), View.OnClickListener {
 
     fun compareData(data:String){
         if(!data.isEmpty()){
-
-
             if(mPreviousPIN.compareTo(data.toInt())==0){
                 //PIN Success
                 showToast("Success")
@@ -107,7 +105,7 @@ class PinActivity : BaseActivity(), View.OnClickListener {
             if(mWrongTrialCount >= 3){
                 //showToast("Three times wrong data")
                 //show the dialog with forgot password option
-
+                mInputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
                 val fragmentTransitionImpl = supportFragmentManager.beginTransaction()
                 val previousInstance = supportFragmentManager.findFragmentByTag("QSTNFRAG")
                 if(previousInstance != null){
@@ -119,7 +117,7 @@ class PinActivity : BaseActivity(), View.OnClickListener {
             }
         }
     }
-
+/*
     fun sendDataBack(data:String){
 
         if(!data.isEmpty()){
@@ -127,13 +125,23 @@ class PinActivity : BaseActivity(), View.OnClickListener {
             setResult(Activity.RESULT_OK, resultIntent)
             finish()
         }
+    }*/
+
+    override fun userEnteredCorrectInput(status:Boolean) {
+        if(status){
+            resultIntent.putExtra(PIN_ENTERED_STATUS,status)
+            setResult(Activity.RESULT_OK, resultIntent)
+            finish()
+        }
     }
 
+
     companion object {
-        val PIN_ENTERED = "USER_PIN"
+        val PIN_ENTERED_STATUS = "USER_PIN"
     }
 
     override fun onSupportNavigateUp(): Boolean {
+        mInputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
         setResult(Activity.RESULT_CANCELED)
         finish()
         return true

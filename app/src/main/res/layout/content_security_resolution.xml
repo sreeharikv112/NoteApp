@@ -43,8 +43,8 @@
     <com.google.android.material.button.MaterialButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btnSave"
-        android:text="Submit"
+        android:id="@+id/btnSubmit"
+        android:text="@string/submit"
         android:layout_gravity="center_horizontal"
         android:layout_margin="@dimen/margin_20"
         />

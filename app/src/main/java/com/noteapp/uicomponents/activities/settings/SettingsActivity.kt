@@ -74,8 +74,8 @@ class SettingsActivity : BaseActivity() , CompoundButton.OnCheckedChangeListener
                 intent.putExtra("LAST_PIN",mPreviousPIN)
                 intent.putExtra("QUESTION",securityQuestion.question)
                 intent.putExtra("ANSWER",securityQuestion.answer)
-                startActivity(intent)
-                //startActivityForResult(intent,TASK_ENTER_PIN)
+                //startActivity(intent)
+                startActivityForResult(intent,TASK_ENTER_PIN)
             }
             else{
                 showSecurityActivity()
@@ -104,11 +104,10 @@ class SettingsActivity : BaseActivity() , CompoundButton.OnCheckedChangeListener
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == TASK_ENTER_PIN) {
             if (resultCode == Activity.RESULT_OK) {
-                val pinEntered = data?.getIntExtra(PinActivity.PIN_ENTERED,-1)
+                val pinEntered = data?.getBooleanExtra(PinActivity.PIN_ENTERED_STATUS,false)
                 mAppLogger.debug(mTag,"pinEntered = $pinEntered")
                 pinEntered?.let {
-
-                    if(mPreviousPIN.compareTo(pinEntered)==0){
+                    /*if(mPreviousPIN.compareTo(pinEntered)==0){
                         showSecurityActivity()
                     }else{
                         showAlert(R.string.pin_does_not_match,
@@ -119,8 +118,10 @@ class SettingsActivity : BaseActivity() , CompoundButton.OnCheckedChangeListener
                                 DialogInterface.OnClickListener { dialog, which ->
 
                                 })
+                    }*/
+                    if(pinEntered){
+                        showSecurityActivity()
                     }
-
                 }
             }
         }

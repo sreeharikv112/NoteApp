@@ -6,10 +6,17 @@ import com.noteapp.R
 import android.R.attr.x
 import android.graphics.Point
 import android.view.*
+import android.widget.Button
 import android.widget.TextView
+import com.google.android.material.button.MaterialButton
+import com.noteapp.common.AppUtils
+import kotlinx.android.synthetic.main.content_security.*
+import kotlinx.android.synthetic.main.content_security_resolution.*
 
 
-class SecurityResolutionDialog(var question:String) : DialogFragment() {
+class SecurityResolutionDialog(var question:String,var answer: String, var listener: UserEnteredAnswer) : DialogFragment(), View.OnClickListener {
+
+    val mAppUtils: AppUtils = AppUtils()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,25 +34,38 @@ class SecurityResolutionDialog(var question:String) : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         val qstn = view.findViewById<TextView>(R.id.question)
         qstn.setText(question)
+        val btnSubmit = view.findViewById<MaterialButton>(R.id.btnSubmit)
+        btnSubmit.setOnClickListener(this)
+    }
 
+    override fun onClick(v: View?) {
+        if(v!!.id == R.id.btnSubmit){
+            if (!mAppUtils.isInputEditTextFilled(edtAnswer!!, answerLayout!!, getString(R.string.enter_security_answer))) {
+                edtAnswer.requestFocus()
+                return
+            }/*else if(edtAnswer.text!!.equals(answer , true) == 0){
+
+            }*/
+            val userInput = edtAnswer.text.toString()!!
+            if( userInput.equals(answer , true)){
+                listener.userEnteredCorrectInput(true)
+            }
+        }
     }
 
     override fun onResume() {
-
         val window = dialog!!.window
-
         val size = Point()
-
         val display = window!!.windowManager.defaultDisplay
-
         display.getSize(size)
-
         // Set the width of the dialog proportional to 75% of the screen width
-        window.setLayout(((size.x * 0.90).toInt()), WindowManager.LayoutParams.WRAP_CONTENT)
-
+        window.setLayout(((size.x * 0.95).toInt()), WindowManager.LayoutParams.WRAP_CONTENT)
         window.setGravity(Gravity.CENTER)
-
         super.onResume()
+    }
+
+    interface UserEnteredAnswer {
+        fun userEnteredCorrectInput(status:Boolean)
     }
 
 }

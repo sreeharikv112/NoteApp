@@ -106,7 +106,6 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
                 mAppLogger.debug(mTag,"calling getSecurityQuestion!!")
                 securityQstnVM.getSecurityQuestion(this)
             }
-
         }
     }
 
