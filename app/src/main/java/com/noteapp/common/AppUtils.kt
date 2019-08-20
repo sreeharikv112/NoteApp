@@ -15,4 +15,10 @@ class AppUtils {
         }
         return true
     }
+
+    fun showErrorInTextField(textInputLayout: TextInputLayout, message: String){
+        if(!message.isEmpty()){
+            textInputLayout.error = message
+        }
+    }
 }

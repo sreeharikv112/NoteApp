@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import com.noteapp.db.DBUtils
 import com.noteapp.db.NoteDataBase
+import com.noteapp.uicomponents.activities.settings.SettingsActivity
 import com.noteapp.uicomponents.activities.setuppin.IGetSecurityQuestionListener
 import com.noteapp.uicomponents.activities.setuppin.IUpdateSecurityListener
 import kotlinx.coroutines.CoroutineScope
@@ -24,9 +25,9 @@ class SecurityQuestionViewModel(application: Application):  AndroidViewModel(app
 
     }
 
-    fun getSecurityQuestion(listenerIGet: IGetSecurityQuestionListener){
+    fun getSecurityQuestion(listenerIGet: IGetSecurityQuestionListener, operation: SettingsActivity.OPERATION){
 
-        dbUtils.fetchSecurityQuestion(mNoteDataBase,listenerIGet)
+        dbUtils.fetchSecurityQuestion(mNoteDataBase,listenerIGet,operation)
 
     }
 }

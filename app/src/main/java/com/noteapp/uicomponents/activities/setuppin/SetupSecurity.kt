@@ -9,8 +9,11 @@ import androidx.appcompat.widget.AppCompatSpinner
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.noteapp.R
+import com.noteapp.common.Constants
+import com.noteapp.db.SharedPreferenceHelper
 import com.noteapp.models.SecurityQuestionModel
 import com.noteapp.models.SecurityQuestionViewModel
+import com.noteapp.uicomponents.activities.settings.SettingsActivity
 import com.noteapp.uicomponents.base.BaseActivity
 import com.noteapp.uicomponents.common.PinEntryEditText
 import kotlinx.android.synthetic.main.activity_note.*
@@ -30,6 +33,8 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
     lateinit var mSelectedSecurityQuestion : String
     lateinit var securityQstnVM : SecurityQuestionViewModel
     lateinit var mSecurityData : SecurityQuestionModel
+    var mShouldSetKeyRequired = false
+    lateinit var mSharedPrefHelper : SharedPreferenceHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +51,10 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
         mQuestionOne.add("Name of first Car")
         mQuestionOne.add("First job")
 
+        try {
+            mShouldSetKeyRequired = intent.getBooleanExtra("KEY_PIN_REQUIRED",false)
+        } catch (e: Exception) {
+        }
 
         mSelectedSecurityQuestion = mQuestionOne.first()
 
@@ -104,12 +113,12 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
             }
             else{
                 mAppLogger.debug(mTag,"calling getSecurityQuestion!!")
-                securityQstnVM.getSecurityQuestion(this)
+                securityQstnVM.getSecurityQuestion(this, SettingsActivity.OPERATION.NONE)
             }
         }
     }
 
-    override fun fetchSecurityQstnListener(securityQuestion: SecurityQuestionModel?) {
+    override fun fetchSecurityQstnListener(securityQuestion: SecurityQuestionModel?, operation: SettingsActivity.OPERATION) {
         try {
             mAppLogger.debug(mTag,"question == ${securityQuestion!!.question}")
             mAppLogger.debug(mTag,"answer == ${securityQuestion!!.answer}")
@@ -138,6 +147,10 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
 
     override fun didSecurityQuestionUpdated(status: Boolean) {
         if(status){
+            if(mShouldSetKeyRequired){
+                mSharedPrefHelper = SharedPreferenceHelper(this)
+                mSharedPrefHelper.saveBoolData(Constants.KEY_PIN_REQUIRED,mShouldSetKeyRequired)
+            }
             showToast("Security Settings updated")
             finish()
         }else{

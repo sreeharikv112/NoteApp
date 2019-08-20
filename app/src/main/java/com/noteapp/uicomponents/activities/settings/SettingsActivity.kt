@@ -9,6 +9,9 @@ import android.widget.CompoundButton
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.noteapp.R
+import com.noteapp.common.Constants
+import com.noteapp.common.Constants.Companion.KEY_PIN_REQUIRED
+import com.noteapp.db.SharedPreferenceHelper
 import com.noteapp.models.SecurityQuestionModel
 import com.noteapp.models.SecurityQuestionViewModel
 import com.noteapp.uicomponents.activities.enterpin.PinActivity
@@ -21,7 +24,6 @@ import java.lang.Exception
 class SettingsActivity : BaseActivity() , CompoundButton.OnCheckedChangeListener, View.OnClickListener,
         IGetSecurityQuestionListener {
 
-
     lateinit var mUpdatePIN: MaterialButton
     lateinit var mAskPIN: SwitchMaterial
     lateinit var securityQstnVM : SecurityQuestionViewModel
@@ -29,6 +31,9 @@ class SettingsActivity : BaseActivity() , CompoundButton.OnCheckedChangeListener
     var mPreviousPIN : Int = -1
     val mTag = "SettingsActivity"
 
+    var mKeyRequiredStatus = false
+    lateinit var mSharedPrefHelper : SharedPreferenceHelper
+    var mCheckedState = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,67 +42,77 @@ class SettingsActivity : BaseActivity() , CompoundButton.OnCheckedChangeListener
         actionBar!!.title = getString(R.string.settings)
         setSupportActionBar(actionBar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-
         securityQstnVM = SecurityQuestionViewModel(application)
         mUpdatePIN = findViewById(R.id.updatePIN)
         mUpdatePIN.setOnClickListener(this)
         mAskPIN = findViewById(R.id.askPIN)
         mAskPIN.setOnCheckedChangeListener(this)
-
+        mSharedPrefHelper = SharedPreferenceHelper(this)
+        mKeyRequiredStatus = mSharedPrefHelper.getBoolData(KEY_PIN_REQUIRED)
+        if(mKeyRequiredStatus){
+            mAskPIN.isChecked = true
+        }
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
       when(buttonView!!.id){
-          /*R.id.updatePIN -> {
-                if(isChecked){
-                    //If pin already se, show pin activity and after cross verifying, go to SetupSecurity
-                    securityQstnVM.getSecurityQuestion(this)
-
-                }
-          }*/
-
-
           R.id.askPIN -> {
-
+              if(isChecked){
+                  mCheckedState = true
+              }
+            securityQstnVM.getSecurityQuestion(this,OPERATION.SWITCH_CHANGED)
+            /*if(isChecked){
+                mSharedPrefHelper.saveBoolData(KEY_PIN_REQUIRED,true)
+            }else{
+                mSharedPrefHelper.saveBoolData(KEY_PIN_REQUIRED,false)
+            }*/
           }
       }
     }
 
-
-    override fun fetchSecurityQstnListener(securityQuestion: SecurityQuestionModel?) {
+    override fun fetchSecurityQstnListener(securityQuestion: SecurityQuestionModel?, operation: OPERATION) {
         try {
             if(securityQuestion != null) {
                 mAppLogger.debug(mTag, "securityQuestion != null ===")
-                mPreviousPIN = (securityQuestion.key).toInt()
+                mPreviousPIN = (securityQuestion.key)
                 mAppLogger.debug(mTag, "mPreviousPIN = $mPreviousPIN")
-                val intent = Intent(this,PinActivity::class.java)
-                intent.putExtra("LAST_PIN",mPreviousPIN)
-                intent.putExtra("QUESTION",securityQuestion.question)
-                intent.putExtra("ANSWER",securityQuestion.answer)
-                //startActivity(intent)
-                startActivityForResult(intent,TASK_ENTER_PIN)
+
+                if(operation == OPERATION.SWITCH_CHANGED){
+                    if(mCheckedState){
+                        mSharedPrefHelper.saveBoolData(KEY_PIN_REQUIRED,true)
+                    }else{
+                        mSharedPrefHelper.saveBoolData(KEY_PIN_REQUIRED,false)
+                    }
+                }else{
+                    val intent = Intent(this,PinActivity::class.java)
+                    intent.putExtra("LAST_PIN",mPreviousPIN)
+                    intent.putExtra("QUESTION",securityQuestion.question)
+                    intent.putExtra("ANSWER",securityQuestion.answer)
+                    startActivityForResult(intent,TASK_ENTER_PIN)
+                }
             }
             else{
-                showSecurityActivity()
+                showSecurityActivity(operation)
             }
         }catch(err: Exception){
-            showSecurityActivity()
+            showSecurityActivity(operation)
         }
     }
 
-    fun showSecurityActivity(){
-        startActivity(Intent(this@SettingsActivity, SetupSecurity::class.java))
+    fun showSecurityActivity(operation: OPERATION){
+        val intent = Intent(this@SettingsActivity, SetupSecurity::class.java)
+        if(operation == OPERATION.SWITCH_CHANGED) {
+            if (mCheckedState) {
+                intent.putExtra("KEY_PIN_REQUIRED",true)
+            }
+        }
+        startActivity(intent)
     }
 
     override fun onClick(v: View?) {
         if(v!!.id == R.id.updatePIN){
-            securityQstnVM.getSecurityQuestion(this)
+            securityQstnVM.getSecurityQuestion(this,OPERATION.BUTTON_CLICKED)
         }
-    }
-
-    fun demo(){
-        /*var dialog =  SecurityResolutionDialog()
-        dialog.show(supportFragmentManager,"")*/
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -107,24 +122,17 @@ class SettingsActivity : BaseActivity() , CompoundButton.OnCheckedChangeListener
                 val pinEntered = data?.getBooleanExtra(PinActivity.PIN_ENTERED_STATUS,false)
                 mAppLogger.debug(mTag,"pinEntered = $pinEntered")
                 pinEntered?.let {
-                    /*if(mPreviousPIN.compareTo(pinEntered)==0){
-                        showSecurityActivity()
-                    }else{
-                        showAlert(R.string.pin_does_not_match,
-                                R.string.ok,R.string.cancel,
-                                DialogInterface.OnClickListener { dialog, which ->
-                                    securityQstnVM.getSecurityQuestion(this)
-                                },
-                                DialogInterface.OnClickListener { dialog, which ->
-
-                                })
-                    }*/
                     if(pinEntered){
-                        showSecurityActivity()
+                        showSecurityActivity(OPERATION.NONE)
                     }
                 }
             }
         }
+    }
+    enum class OPERATION {
+
+        SWITCH_CHANGED, BUTTON_CLICKED , NONE
+
     }
 
     override fun onSupportNavigateUp(): Boolean {

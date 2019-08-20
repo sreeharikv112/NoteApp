@@ -91,7 +91,8 @@ class PinActivity : BaseActivity(), View.OnClickListener , SecurityResolutionDia
         if(!data.isEmpty()){
             if(mPreviousPIN.compareTo(data.toInt())==0){
                 //PIN Success
-                showToast("Success")
+                //showToast("Success")
+                userEnteredCorrectInput(true)
             }else {
                 mWrongTrialCount ++
 

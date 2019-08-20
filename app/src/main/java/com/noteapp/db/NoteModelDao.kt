@@ -29,8 +29,6 @@ interface NoteModelDao {
     @Query("SELECT * FROM SecurityQuestionModel")
     fun getSecurityQuestion(): SecurityQuestionModel
 
-    /*@Update
-    fun updateSecurityQuestion(securityQuestionModel: SecurityQuestionModel)*/
 }
 
 

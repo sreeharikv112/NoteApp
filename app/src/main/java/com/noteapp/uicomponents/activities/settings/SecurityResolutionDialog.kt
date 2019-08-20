@@ -24,16 +24,13 @@ class SecurityResolutionDialog(var question:String,var answer: String, var liste
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.content_security_resolution, container, false)
-
-
-
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val qstn = view.findViewById<TextView>(R.id.question)
-        qstn.setText(question)
+        qstn.text = question
         val btnSubmit = view.findViewById<MaterialButton>(R.id.btnSubmit)
         btnSubmit.setOnClickListener(this)
     }
@@ -43,12 +40,11 @@ class SecurityResolutionDialog(var question:String,var answer: String, var liste
             if (!mAppUtils.isInputEditTextFilled(edtAnswer!!, answerLayout!!, getString(R.string.enter_security_answer))) {
                 edtAnswer.requestFocus()
                 return
-            }/*else if(edtAnswer.text!!.equals(answer , true) == 0){
-
-            }*/
-            val userInput = edtAnswer.text.toString()!!
-            if( userInput.equals(answer , true)){
+            }
+            else if( edtAnswer.text.toString()!!.equals(answer , true)){
                 listener.userEnteredCorrectInput(true)
+            }else{
+                mAppUtils.showErrorInTextField(answerLayout!!, getString(R.string.wrong_answer))
             }
         }
     }

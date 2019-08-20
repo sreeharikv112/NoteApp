@@ -3,6 +3,7 @@ package com.noteapp.db
 import com.noteapp.common.AppLogger
 import com.noteapp.models.NoteModel
 import com.noteapp.models.SecurityQuestionModel
+import com.noteapp.uicomponents.activities.settings.SettingsActivity
 import com.noteapp.uicomponents.activities.setuppin.IGetSecurityQuestionListener
 import com.noteapp.uicomponents.activities.setuppin.IUpdateSecurityListener
 import io.reactivex.Completable
@@ -42,7 +43,9 @@ class DBUtils {
         }
     }
 
-    fun fetchSecurityQuestion(noteDataBase:NoteDataBase,listenerIGet: IGetSecurityQuestionListener){
+    fun fetchSecurityQuestion(noteDataBase:NoteDataBase,listenerIGet: IGetSecurityQuestionListener,
+                              operation: SettingsActivity.OPERATION
+                              ){
         var savedSecurityQstn : SecurityQuestionModel? = null
         Completable.fromAction {
             savedSecurityQstn = noteDataBase.noteItemAndNotesModel().getSecurityQuestion()
@@ -53,12 +56,12 @@ class DBUtils {
 
                     override fun onComplete() {
                         mAppLogger.debug(TAG,"fetchSecurityQuestion SUCCESS" )
-                        listenerIGet.fetchSecurityQstnListener(savedSecurityQstn)
+                        listenerIGet.fetchSecurityQstnListener(savedSecurityQstn , operation)
                     }
 
                     override fun onError(e: Throwable) {
                         mAppLogger.debug(TAG,"fetchSecurityQuestion ERROR" )
-                        listenerIGet.fetchSecurityQstnListener(null)
+                        listenerIGet.fetchSecurityQstnListener(null, operation)
                     }
                 })
     }
