@@ -1,7 +1,6 @@
 package com.noteapp.uicomponents.activities.settings
 
 import android.app.Activity
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -9,7 +8,6 @@ import android.widget.CompoundButton
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.noteapp.R
-import com.noteapp.common.Constants
 import com.noteapp.common.Constants.Companion.KEY_PIN_REQUIRED
 import com.noteapp.db.SharedPreferenceHelper
 import com.noteapp.models.SecurityQuestionModel
@@ -21,16 +19,15 @@ import com.noteapp.uicomponents.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_note.*
 import java.lang.Exception
 
-class SettingsActivity : BaseActivity() , CompoundButton.OnCheckedChangeListener, View.OnClickListener,
+class SettingsActivity : BaseActivity() /*, CompoundButton.OnCheckedChangeListener*/, View.OnClickListener,
         IGetSecurityQuestionListener {
 
     lateinit var mUpdatePIN: MaterialButton
-    lateinit var mAskPIN: SwitchMaterial
+    /*lateinit var mSwitchAskPIN: SwitchMaterial*/
     lateinit var securityQstnVM : SecurityQuestionViewModel
     val TASK_ENTER_PIN = 10
     var mPreviousPIN : Int = -1
     val mTag = "SettingsActivity"
-
     var mKeyRequiredStatus = false
     lateinit var mSharedPrefHelper : SharedPreferenceHelper
     var mCheckedState = false
@@ -45,30 +42,33 @@ class SettingsActivity : BaseActivity() , CompoundButton.OnCheckedChangeListener
         securityQstnVM = SecurityQuestionViewModel(application)
         mUpdatePIN = findViewById(R.id.updatePIN)
         mUpdatePIN.setOnClickListener(this)
-        mAskPIN = findViewById(R.id.askPIN)
-        mAskPIN.setOnCheckedChangeListener(this)
+        /*mSwitchAskPIN = findViewById(R.id.askPIN)
+        mSwitchAskPIN.setOnCheckedChangeListener(this)*/
         mSharedPrefHelper = SharedPreferenceHelper(this)
         mKeyRequiredStatus = mSharedPrefHelper.getBoolData(KEY_PIN_REQUIRED)
-        if(mKeyRequiredStatus){
-            mAskPIN.isChecked = true
-        }
+        /*if(mKeyRequiredStatus){
+            mSwitchAskPIN.isChecked = true
+        }*/
     }
 
-    override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
+    /*override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
       when(buttonView!!.id){
           R.id.askPIN -> {
-              if(isChecked){
+              if(  !mSharedPrefHelper.getBoolData(KEY_PIN_REQUIRED) && isChecked){
                   mCheckedState = true
+                  securityQstnVM.getSecurityQuestion(this,OPERATION.SWITCH_CHANGED)
+                  mSwitchAskPIN.isChecked = false
               }
-            securityQstnVM.getSecurityQuestion(this,OPERATION.SWITCH_CHANGED)
-            /*if(isChecked){
-                mSharedPrefHelper.saveBoolData(KEY_PIN_REQUIRED,true)
-            }else{
-                mSharedPrefHelper.saveBoolData(KEY_PIN_REQUIRED,false)
-            }*/
+              else if(mSharedPrefHelper.getBoolData(KEY_PIN_REQUIRED)){
+                  mSwitchAskPIN.isChecked = true
+              }
+              else{
+                  mSharedPrefHelper.saveBoolData(KEY_PIN_REQUIRED,false)
+                  mSwitchAskPIN.isChecked = false
+              }
           }
       }
-    }
+    }*/
 
     override fun fetchSecurityQstnListener(securityQuestion: SecurityQuestionModel?, operation: OPERATION) {
         try {
@@ -77,35 +77,32 @@ class SettingsActivity : BaseActivity() , CompoundButton.OnCheckedChangeListener
                 mPreviousPIN = (securityQuestion.key)
                 mAppLogger.debug(mTag, "mPreviousPIN = $mPreviousPIN")
 
-                if(operation == OPERATION.SWITCH_CHANGED){
+                /*if(operation == OPERATION.SWITCH_CHANGED){
                     if(mCheckedState){
                         mSharedPrefHelper.saveBoolData(KEY_PIN_REQUIRED,true)
+                        mSwitchAskPIN.isChecked = true
                     }else{
                         mSharedPrefHelper.saveBoolData(KEY_PIN_REQUIRED,false)
+                        mSwitchAskPIN.isChecked = false
                     }
-                }else{
+                }else{*/
                     val intent = Intent(this,PinActivity::class.java)
                     intent.putExtra("LAST_PIN",mPreviousPIN)
                     intent.putExtra("QUESTION",securityQuestion.question)
                     intent.putExtra("ANSWER",securityQuestion.answer)
                     startActivityForResult(intent,TASK_ENTER_PIN)
-                }
+                /*}*/
             }
             else{
-                showSecurityActivity(operation)
+                showSecurityActivity()
             }
         }catch(err: Exception){
-            showSecurityActivity(operation)
+            showSecurityActivity()
         }
     }
 
-    fun showSecurityActivity(operation: OPERATION){
+    fun showSecurityActivity(){
         val intent = Intent(this@SettingsActivity, SetupSecurity::class.java)
-        if(operation == OPERATION.SWITCH_CHANGED) {
-            if (mCheckedState) {
-                intent.putExtra("KEY_PIN_REQUIRED",true)
-            }
-        }
         startActivity(intent)
     }
 
@@ -123,16 +120,15 @@ class SettingsActivity : BaseActivity() , CompoundButton.OnCheckedChangeListener
                 mAppLogger.debug(mTag,"pinEntered = $pinEntered")
                 pinEntered?.let {
                     if(pinEntered){
-                        showSecurityActivity(OPERATION.NONE)
+                        showSecurityActivity()
                     }
                 }
             }
         }
     }
+
     enum class OPERATION {
-
         SWITCH_CHANGED, BUTTON_CLICKED , NONE
-
     }
 
     override fun onSupportNavigateUp(): Boolean {

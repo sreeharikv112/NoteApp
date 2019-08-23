@@ -21,7 +21,7 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="edit">Edit</string>
     <string name="update_pin">Setup / Update PIN</string>
-    <string name="request_pin_start">Ask PIN at start</string>
+    <string name="request_pin_start">Ask PIN at app launch  </string>
     <string name="update_pin_btn">Update PIN</string>
     <string name="new_pin">New PIN</string>
     <string name="confirm_new_pin">Confirm PIN</string>
