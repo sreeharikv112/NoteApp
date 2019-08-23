@@ -2,7 +2,9 @@ package com.noteapp.uicomponents.activities.setuppin
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
@@ -88,6 +90,49 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
         }
         mInputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
+        mPin.requestFocus()
+        mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+        //Text Change Listeners
+        mPin.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence,
+                                           start: Int,
+                                           count: Int,
+                                           after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence,
+                                       start: Int,
+                                       before: Int,
+                                       count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable) {
+                if (s.length == 4) {
+                    mPinConfirm.requestFocus()
+                }
+            }
+        })
+
+        mPinConfirm.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence,
+                                           start: Int,
+                                           count: Int,
+                                           after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence,
+                                       start: Int,
+                                       before: Int,
+                                       count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable) {
+                if (s.length == 4) {
+                    mInputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+                    mSpinnerQstnOne.requestFocus()
+                }
+            }
+        })
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -172,15 +217,20 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
                         mAppLogger.debug(mTag,"mSecurityData.key = ${mSecurityData.key}")
                         mAppLogger.debug(mTag,"mSecurityData.question = ${mSecurityData.question}")*/
                         pinCheckPendingToSetToTrue = false
+                        mSwitchAskPIN.isChecked = true
                         mSharedPrefHelper.saveBoolData(Constants.KEY_PIN_REQUIRED,true)
                         onSupportNavigateUp()
                     }
                     else{
+                        showToast("Please set up PIN")
+                        mSwitchAskPIN.isChecked = false
                         mAppLogger.debug(mTag,"mSecurityData.value is null ")
                         mPin.requestFocus()
                         mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
                     }
                 }catch(err: Exception){
+                    showToast("Please set up PIN")
+                    mSwitchAskPIN.isChecked = false
                     mAppLogger.error(mTag,"mSecurityData is null ")
                     mPin.requestFocus()
                     mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
