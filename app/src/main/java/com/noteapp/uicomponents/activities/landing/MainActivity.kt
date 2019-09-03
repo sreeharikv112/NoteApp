@@ -2,7 +2,6 @@ package com.noteapp.uicomponents.activities.landing
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.noteapp.R
 import com.noteapp.models.NoteListViewModel
 import com.noteapp.models.NoteModel
-import com.noteapp.uicomponents.activities.enterpin.PinActivity
 import com.noteapp.uicomponents.activities.makenote.MakeNoteActivity
 import com.noteapp.uicomponents.activities.settings.SettingsActivity
 import com.noteapp.uicomponents.activities.viewnote.ViewNote
@@ -23,8 +21,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : BaseActivity(), View.OnClickListener {
 
 
-    private lateinit var mRecyclerView: RecyclerView
-    private lateinit var mNoteAdapter: NoteAdapter
+    lateinit var mRecyclerView: RecyclerView
+    lateinit var mNoteAdapter: NoteAdapter
     private lateinit var mNoteListViewModel: NoteListViewModel
     private lateinit var mNoteModel: NoteModel
 

@@ -36,6 +36,7 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$andx_constraint"
     implementation "com.google.android.material:material:$material_design"
     implementation "androidx.legacy:legacy-support-v4:$andx_legacy_support"
+    testImplementation "junit:junit:$junit_version"
 
     //Lifecycle ViewModel and LiveData
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
@@ -55,6 +56,9 @@ dependencies {
     //RxKotlin
     implementation "io.reactivex.rxjava2:rxkotlin:$rxKotlin"
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroid"
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-beta01'
+    androidTestImplementation 'androidx.test:rules:1.2.0-beta01'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.1.0'
 
 
 }
