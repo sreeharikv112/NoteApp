@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
+import com.noteapp.common.Constants
 import com.noteapp.models.NoteModel
 import com.noteapp.uicomponents.activities.makenote.MakeNoteActivity
 import com.noteapp.uicomponents.base.BaseActivity
@@ -32,7 +33,7 @@ class ViewNote : BaseActivity() {
 
         linearBackground = findViewById(com.noteapp.R.id.contentBackground)
 
-        mNoteModel = intent.extras!!.getSerializable("selectedNote") as NoteModel
+        mNoteModel = intent.extras!!.getSerializable(Constants.SELECTED_NOTE) as NoteModel
 
         val noteTitle = mNoteModel?.noteTitle
         val noteDesc = mNoteModel?.noteDescription
@@ -101,8 +102,8 @@ class ViewNote : BaseActivity() {
         finish()
         //open new edit activity
         val intent = Intent(this@ViewNote, MakeNoteActivity::class.java)
-        intent.putExtra("selectedNote",mNoteModel)
-        intent.putExtra("editAction",true)
+        intent.putExtra(Constants.SELECTED_NOTE,mNoteModel)
+        intent.putExtra(Constants.EDIT_ACTION,true)
         startActivity(intent)
     }
 }

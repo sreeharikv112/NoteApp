@@ -8,6 +8,7 @@ import android.widget.CompoundButton
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.noteapp.R
+import com.noteapp.common.Constants
 import com.noteapp.common.Constants.Companion.KEY_PIN_REQUIRED
 import com.noteapp.db.SharedPreferenceHelper
 import com.noteapp.models.SecurityQuestionModel
@@ -87,9 +88,9 @@ class SettingsActivity : BaseActivity() /*, CompoundButton.OnCheckedChangeListen
                     }
                 }else{*/
                     val intent = Intent(this,PinActivity::class.java)
-                    intent.putExtra("LAST_PIN",mPreviousPIN)
-                    intent.putExtra("QUESTION",securityQuestion.question)
-                    intent.putExtra("ANSWER",securityQuestion.answer)
+                    intent.putExtra(Constants.LAST_PIN,mPreviousPIN)
+                    intent.putExtra(Constants.QUESTION,securityQuestion.question)
+                    intent.putExtra(Constants.ANSWER,securityQuestion.answer)
                     startActivityForResult(intent,TASK_ENTER_PIN)
                 /*}*/
             }

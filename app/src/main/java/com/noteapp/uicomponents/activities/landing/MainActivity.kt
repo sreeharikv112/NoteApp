@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.noteapp.R
+import com.noteapp.common.Constants
 import com.noteapp.models.NoteListViewModel
 import com.noteapp.models.NoteModel
 import com.noteapp.uicomponents.activities.makenote.MakeNoteActivity
@@ -78,7 +79,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         mNoteModel = v?.getTag() as NoteModel
         val intent = Intent(this@MainActivity, ViewNote::class.java)
         val bundle = Bundle()
-        bundle.putSerializable("selectedNote",mNoteModel)
+        bundle.putSerializable(Constants.SELECTED_NOTE,mNoteModel)
         intent.putExtras(bundle)
         startActivity(intent)
     }
@@ -101,9 +102,9 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             mNoteModel = v?.getTag() as NoteModel
             val intent = Intent(this@MainActivity, MakeNoteActivity::class.java)
             val bundle = Bundle()
-            bundle.putSerializable("selectedNote",mNoteModel)
+            bundle.putSerializable(Constants.SELECTED_NOTE,mNoteModel)
             intent.putExtras(bundle)
-            intent.putExtra("editAction",true)
+            intent.putExtra(Constants.EDIT_ACTION,true)
             startActivity(intent)
         }
     }

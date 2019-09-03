@@ -14,6 +14,7 @@ import com.noteapp.R
 import android.app.Activity
 import android.view.View
 import android.widget.Button
+import com.noteapp.common.Constants
 import com.noteapp.uicomponents.activities.settings.SecurityResolutionDialog
 
 
@@ -38,9 +39,9 @@ class PinActivity : BaseActivity(), View.OnClickListener , SecurityResolutionDia
         setSupportActionBar(actionBar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        mPreviousPIN = intent.getIntExtra("LAST_PIN",-1)
-        mPreviousQSTN = intent.getStringExtra("QUESTION")
-        mPreviousANSWER = intent.getStringExtra("ANSWER")
+        mPreviousPIN = intent.getIntExtra(Constants.LAST_PIN,-1)
+        mPreviousQSTN = intent.getStringExtra(Constants.QUESTION)
+        mPreviousANSWER = intent.getStringExtra(Constants.ANSWER)
 
         mSecretQstnDialog =  SecurityResolutionDialog(mPreviousQSTN,mPreviousANSWER,this)
         mAppLogger.debug(TAG,"mPreviousPIN === $mPreviousPIN")

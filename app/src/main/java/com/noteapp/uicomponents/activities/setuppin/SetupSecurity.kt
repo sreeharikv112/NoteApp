@@ -66,7 +66,7 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
         mSharedPrefHelper = SharedPreferenceHelper(this)
         mKeyRequiredStatus = mSharedPrefHelper.getBoolData(Constants.KEY_PIN_REQUIRED)
         try {
-            mShouldSetKeyRequired = intent.getBooleanExtra("KEY_PIN_REQUIRED",false)
+            mShouldSetKeyRequired = intent.getBooleanExtra(Constants.KEY_PIN_REQUIRED,false)
         } catch (e: Exception) {
         }
 
@@ -148,19 +148,19 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
         if(v!!.id == R.id.btnSave){
 
             if( TextUtils.isEmpty(mPin.text) || mPin.text?.length !=4){
-                showToast("Please enter valid PIN")
+                showToast(getString(R.string.please_enter_valid_pin))
                 mPin.requestFocus()
                 mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
                 return
             }
             else if(TextUtils.isEmpty(mPinConfirm.text) || mPinConfirm.text?.length !=4){
-                showToast("Please confirm PIN")
+                showToast(getString(R.string.please_enter_confirm_pin))
                 mPinConfirm.requestFocus()
                 mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
                 return
             }
             else if( !(mPin.text.toString() == mPinConfirm.text.toString())!!){
-                showToast("PIN and Confirm PIN does not match")
+                showToast(getString(R.string.pin_and_confirm_pin_shouldmatch))
                 mPinConfirm.requestFocus()
                 mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
                 return
@@ -174,7 +174,7 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
                 return
             }
             else if(edtUserAnswer.text!!.length < 4){
-                showToast("Answer should be of minimum 4 character")
+                showToast(getString(R.string.answer_min_chars))
                 edtUserAnswer.requestFocus()
                 mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
                 return
@@ -191,7 +191,7 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
         if(  mKeyRequiredStatus && !isChecked){
             mSwitchAskPIN.isChecked = false
             mSharedPrefHelper.saveBoolData(Constants.KEY_PIN_REQUIRED,false)
-            showToast("PIN will not be asked at start!")
+            showToast(getString(R.string.pin_will_not_be_asked_at_start))
         }
         else if(mKeyRequiredStatus && isChecked){
             mSwitchAskPIN.isChecked = true
@@ -222,14 +222,14 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
                         onSupportNavigateUp()
                     }
                     else{
-                        showToast("Please set up PIN")
+                        showToast(getString(R.string.please_setup_pin))
                         mSwitchAskPIN.isChecked = false
                         mAppLogger.debug(mTag,"mSecurityData.value is null ")
                         mPin.requestFocus()
                         mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
                     }
                 }catch(err: Exception){
-                    showToast("Please set up PIN")
+                    showToast(getString(R.string.please_setup_pin))
                     mSwitchAskPIN.isChecked = false
                     mAppLogger.error(mTag,"mSecurityData is null ")
                     mPin.requestFocus()
@@ -263,7 +263,7 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
                 pinCheckPendingToSetToTrue = false
                 mSharedPrefHelper.saveBoolData(Constants.KEY_PIN_REQUIRED,true)
             }
-            showToast("Security Settings updated")
+            showToast(getString(R.string.security_settings_updated))
             finish()
         }else{
             showToast("Could not update Security settings. Pls try again.")

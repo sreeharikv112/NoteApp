@@ -1,7 +1,6 @@
 package com.noteapp.uicomponents.activities.makenote
 
 import android.os.Bundle
-import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -9,6 +8,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.noteapp.R
+import com.noteapp.common.Constants
 
 import com.noteapp.models.AddNoteViewModel
 import com.noteapp.models.NoteModel
@@ -54,8 +54,8 @@ class MakeNoteActivity : BaseActivity() ,View.OnClickListener {
         mNoteTitle = findViewById(R.id.addNoteTitle)
         mNoteDesc = findViewById(R.id.addNoteDescription)
 
-        mNoteModel = intent.extras?.getSerializable("selectedNote") as NoteModel?
-        isEditNote = intent.getBooleanExtra("editAction",false)
+        mNoteModel = intent.extras?.getSerializable(Constants.SELECTED_NOTE) as NoteModel?
+        isEditNote = intent.getBooleanExtra(Constants.EDIT_ACTION,false)
 
         if (isEditNote && mNoteModel != null) {
             actionBar!!.title = getString(R.string.edit_note)
