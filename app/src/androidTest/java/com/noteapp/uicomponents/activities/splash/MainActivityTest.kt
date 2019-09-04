@@ -82,7 +82,6 @@ class MainActivityTest {
                 description.appendText("has item at position $position: ")
                 itemMatcher.describeTo(description)
             }
-
             override fun matchesSafely(view: RecyclerView): Boolean {
                 val viewHolder = view.findViewHolderForAdapterPosition(position)
                         ?: // has no item on such position

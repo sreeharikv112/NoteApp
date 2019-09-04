@@ -15,6 +15,7 @@ import android.app.Activity
 import android.view.View
 import android.widget.Button
 import com.noteapp.common.Constants
+import com.noteapp.uicomponents.activities.landing.MainActivity
 import com.noteapp.uicomponents.activities.settings.SecurityResolutionDialog
 
 
@@ -30,6 +31,7 @@ class PinActivity : BaseActivity(), View.OnClickListener , SecurityResolutionDia
     val TAG = "PinActivity"
     lateinit var mSubmittedPIN : String
     lateinit var mSecretQstnDialog : SecurityResolutionDialog
+    var mShouldNavigateToHome = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,11 +44,10 @@ class PinActivity : BaseActivity(), View.OnClickListener , SecurityResolutionDia
         mPreviousPIN = intent.getIntExtra(Constants.LAST_PIN,-1)
         mPreviousQSTN = intent.getStringExtra(Constants.QUESTION)
         mPreviousANSWER = intent.getStringExtra(Constants.ANSWER)
-
+        mShouldNavigateToHome = intent.getBooleanExtra(Constants.NAVIGATE_TO_HOME,false)
         mSecretQstnDialog =  SecurityResolutionDialog(mPreviousQSTN,mPreviousANSWER,this)
         mAppLogger.debug(TAG,"mPreviousPIN === $mPreviousPIN")
         mAppLogger.debug(TAG,"mPreviousANSWER === $mPreviousANSWER")
-
 
         mSubmit = findViewById(R.id.btnSubmit)
         mSubmit.setOnClickListener(this)
@@ -131,12 +132,17 @@ class PinActivity : BaseActivity(), View.OnClickListener , SecurityResolutionDia
 
     override fun userEnteredCorrectInput(status:Boolean) {
         if(status){
-            resultIntent.putExtra(PIN_ENTERED_STATUS,status)
-            setResult(Activity.RESULT_OK, resultIntent)
-            finish()
+
+            if(mShouldNavigateToHome){
+                startActivity(Intent(this@PinActivity , MainActivity::class.java))
+                finish()
+            }else{
+                resultIntent.putExtra(PIN_ENTERED_STATUS,status)
+                setResult(Activity.RESULT_OK, resultIntent)
+                finish()
+            }
         }
     }
-
 
     companion object {
         val PIN_ENTERED_STATUS = "USER_PIN"
