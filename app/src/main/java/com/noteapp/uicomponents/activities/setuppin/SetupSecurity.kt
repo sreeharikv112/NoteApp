@@ -130,6 +130,7 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
                 if (s.length == 4) {
                     mInputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
                     mSpinnerQstnOne.requestFocus()
+                    mSpinnerQstnOne.performClick()
                 }
             }
         })
@@ -146,49 +147,68 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
 
     override fun onClick(v: View?) {
         if(v!!.id == R.id.btnSave){
-
-            if( TextUtils.isEmpty(mPin.text) || mPin.text?.length !=4){
-                showToast(getString(R.string.please_enter_valid_pin))
-                mPin.requestFocus()
-                mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
-                return
-            }
-            else if(TextUtils.isEmpty(mPinConfirm.text) || mPinConfirm.text?.length !=4){
-                showToast(getString(R.string.please_enter_confirm_pin))
-                mPinConfirm.requestFocus()
-                mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
-                return
-            }
-            else if( !(mPin.text.toString() == mPinConfirm.text.toString())!!){
-                showToast(getString(R.string.pin_and_confirm_pin_shouldmatch))
-                mPinConfirm.requestFocus()
-                mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
-                return
-            }
-            else if(mSelectedSecurityQuestion == mQuestionOne[0]){
-                mSpinnerQstnOne.performClick()
-            }
-            else if (!mAppUtils.isInputEditTextFilled(edtUserAnswer!!, addAnswerLayout!!, getString(R.string.enter_security_answer))) {
-                mUserAnswer.requestFocus()
-                mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
-                return
-            }
-            else if(edtUserAnswer.text!!.length < 4){
-                showToast(getString(R.string.answer_min_chars))
-                edtUserAnswer.requestFocus()
-                mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
-                return
-            }
-            else{
-                mAppLogger.debug(mTag,"calling getSecurityQuestion!!")
-                mInputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, InputMethodManager.HIDE_IMPLICIT_ONLY)
-                securityQstnVM.getSecurityQuestion(this, SettingsActivity.OPERATION.NONE)
-            }
+            validateFields(false)
         }
     }
 
+    private fun validateFields(isOnCheckedChanged: Boolean): Boolean{
+        var status = true
+
+        if( TextUtils.isEmpty(mPin.text) || mPin.text?.length !=4){
+            showToast(getString(R.string.please_enter_valid_pin))
+            mPin.requestFocus()
+            mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+            status = false
+        }
+        else if(TextUtils.isEmpty(mPinConfirm.text) || mPinConfirm.text?.length !=4){
+            showToast(getString(R.string.please_enter_confirm_pin))
+            mPinConfirm.requestFocus()
+            mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+            status = false
+        }
+        else if( !(mPin.text.toString() == mPinConfirm.text.toString())!!){
+            showToast(getString(R.string.pin_and_confirm_pin_shouldmatch))
+            mPinConfirm.requestFocus()
+            mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+            status = false
+        }
+        else if(mSelectedSecurityQuestion == mQuestionOne[0]){
+            status = false
+            mSpinnerQstnOne.performClick()
+        }
+        else if (!mAppUtils.isInputEditTextFilled(edtUserAnswer!!, addAnswerLayout!!, getString(R.string.enter_security_answer))) {
+            mUserAnswer.requestFocus()
+            mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+            status = false
+        }
+        else if(edtUserAnswer.text!!.length < 4){
+            showToast(getString(R.string.answer_min_chars))
+            edtUserAnswer.requestFocus()
+            mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+
+            status = false
+        }
+        else if(isOnCheckedChanged){
+            status = true
+            mSwitchAskPIN.isChecked = true
+        }
+        else{
+            status = true
+            mAppLogger.debug(mTag,"calling getSecurityQuestion!!")
+            mInputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, InputMethodManager.HIDE_IMPLICIT_ONLY)
+            securityQstnVM.getSecurityQuestion(this, SettingsActivity.OPERATION.NONE)
+        }
+        return status
+    }
+
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
-        if(  mKeyRequiredStatus && !isChecked){
+        if(!isChecked){
+            mSharedPrefHelper.saveBoolData(Constants.KEY_PIN_REQUIRED,false)
+            mSwitchAskPIN.isChecked = false
+            onSupportNavigateUp()
+            showToast(getString(R.string.pin_will_not_be_asked_at_start))
+        }
+        else if(  mKeyRequiredStatus && !isChecked){
             mSwitchAskPIN.isChecked = false
             mSharedPrefHelper.saveBoolData(Constants.KEY_PIN_REQUIRED,false)
             showToast(getString(R.string.pin_will_not_be_asked_at_start))
@@ -199,7 +219,10 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
         else if(!mKeyRequiredStatus && isChecked){
             //check pin and set status
             pinCheckPendingToSetToTrue = true
-            securityQstnVM.getSecurityQuestion(this, SettingsActivity.OPERATION.SWITCH_CHANGED)
+            //validateFields()
+            //securityQstnVM.getSecurityQuestion(this, SettingsActivity.OPERATION.SWITCH_CHANGED)
+            mSwitchAskPIN.isChecked = false
+            validateFields(true)
         }
         else if(!mKeyRequiredStatus && !isChecked){
             mSwitchAskPIN.isChecked = false
@@ -212,10 +235,6 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
                 try {
 
                     if(securityQuestion != null) {
-                        /*mSecurityData = securityQuestion
-                        mAppLogger.debug(mTag,"mSecurityData.answer = ${mSecurityData.answer}")
-                        mAppLogger.debug(mTag,"mSecurityData.key = ${mSecurityData.key}")
-                        mAppLogger.debug(mTag,"mSecurityData.question = ${mSecurityData.question}")*/
                         pinCheckPendingToSetToTrue = false
                         mSwitchAskPIN.isChecked = true
                         mSharedPrefHelper.saveBoolData(Constants.KEY_PIN_REQUIRED,true)
@@ -253,11 +272,6 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
 
     override fun didSecurityQuestionUpdated(status: Boolean) {
         if(status){
-            /*if(mShouldSetKeyRequired){
-                mSharedPrefHelper = SharedPreferenceHelper(this)
-                mSharedPrefHelper.saveBoolData(Constants.KEY_PIN_REQUIRED,mShouldSetKeyRequired)
-            }*/
-
             if(pinCheckPendingToSetToTrue)
             {
                 pinCheckPendingToSetToTrue = false

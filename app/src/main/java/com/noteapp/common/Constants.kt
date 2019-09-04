@@ -8,5 +8,6 @@ class Constants {
         val LAST_PIN = "LAST_PIN"
         val QUESTION = "QUESTION"
         val ANSWER = "ANSWER"
+        val NAVIGATE_TO_HOME = "NAVIGATE_TO_HOME"
     }
 }
