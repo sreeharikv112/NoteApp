@@ -33,7 +33,7 @@ class MainActivityTest {
 
 
     @Test
-    fun splashActivityTest() {
+    fun create_note_check_homeList_populated_at_top() {
 
         val title = "note title here abc"
 
@@ -70,6 +70,10 @@ class MainActivityTest {
         onView(withId(R.id.listOfNoteRecyclerView))
                 .check(matches(atPosition(0, hasDescendant(withText(description)))))
     }
+
+
+
+
 
     fun atPosition(position: Int, @NonNull itemMatcher: Matcher<View>): Matcher<View> {
         checkNotNull(itemMatcher)
