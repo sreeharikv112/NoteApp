@@ -102,6 +102,12 @@ class PinActivity : BaseActivity(), View.OnClickListener , SecurityResolutionDia
                 {
                     showToast("Wrong PIN entered! Pls try again")
                     mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+                    mOtpEditText.requestFocus()
+                    try {
+                        mOtpEditText.text!!.clear()
+                    } catch (e: Exception) {
+
+                    }
                 }
             }
 

@@ -38,7 +38,6 @@ class MakeNoteActivity : BaseActivity() ,View.OnClickListener {
     private var mBtnDefault : MaterialButton? = null
     private var mNoteColor = -1
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_note)
@@ -83,9 +82,11 @@ class MakeNoteActivity : BaseActivity() ,View.OnClickListener {
         mBtnYellow!!.backgroundTintList = ContextCompat.getColorStateList(this@MakeNoteActivity, android.R.color.holo_orange_light)
         mBtnYellow!!.setOnClickListener(this)
 
-        mBtnDefault = findViewById(com.noteapp.R.id.btnDefault)
+        mBtnDefault = findViewById(R.id.btnDefault)
         mBtnDefault!!.backgroundTintList = ContextCompat.getColorStateList(this@MakeNoteActivity, android.R.color.transparent)
         mBtnDefault!!.setOnClickListener(this)
+
+        mNoteTitle!!.requestFocus()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -153,9 +154,9 @@ class MakeNoteActivity : BaseActivity() ,View.OnClickListener {
         if (!mAppUtils.isInputEditTextFilled(addNoteTitle!!, addNoteLayout!!, getString(R.string.note_title_error))) {
             return
         }
-        else if (!mAppUtils.isInputEditTextFilled(addNoteDescription!!, addNoteDescriptionLayout!!, getString(R.string.create_note_error))) {
+        /*else if (!mAppUtils.isInputEditTextFilled(addNoteDescription!!, addNoteDescriptionLayout!!, getString(R.string.create_note_error))) {
             return
-        }
+        }*/
         else {
             mAppLogger.debug(mTag,"Proceed with saving to DB ")
 
