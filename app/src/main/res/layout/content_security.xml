@@ -37,15 +37,6 @@
                 android:text="@string/use_pin"/>
         </RadioGroup>
 
-        <!--<LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:visibility="invisible"
-            layout="@layout/content_pin_selected"
-            android:id="@+id/pinComponentLayout"
-            />-->
-
             <include
                 android:id="@+id/pin_content_layout"
                 android:layout_width="match_parent"
@@ -53,115 +44,6 @@
                 android:visibility="gone"
                 layout="@layout/content_pin_selected"/>
 
-        <!--<TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:text="@string/new_pin"
-            android:layout_marginTop="@dimen/margin_10"
-            android:layout_gravity="center_horizontal"
-            />
-        <com.noteapp.uicomponents.common.PinEntryEditText
-            android:id="@+id/newPin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:cursorVisible="false"
-            android:digits="1234567890"
-            android:inputType="number"
-            android:maxLength="4"
-            android:textIsSelectable="false"
-            android:textSize="20sp"
-            android:focusedByDefault="true"
-            android:layout_marginLeft="@dimen/margin_10"
-            android:layout_marginRight="@dimen/margin_10"
-            android:focusableInTouchMode="true"
-            android:layout_marginTop="@dimen/margin_10"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:text="@string/confirm_new_pin"
-            android:layout_marginTop="@dimen/margin_10"
-            android:layout_gravity="center_horizontal"
-            />
-
-        <com.noteapp.uicomponents.common.PinEntryEditText
-            android:id="@+id/newPinConfirm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:cursorVisible="false"
-            android:digits="1234567890"
-            android:inputType="number"
-            android:maxLength="4"
-            android:textIsSelectable="false"
-            android:textSize="20sp"
-            android:layout_marginLeft="@dimen/margin_10"
-            android:layout_marginRight="@dimen/margin_10"
-            android:focusableInTouchMode="true"
-            android:layout_marginTop="@dimen/margin_10"
-            />
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:layout_marginTop="@dimen/margin_10"
-            />
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/securityQOne"
-            android:layout_width="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_10"
-            android:layout_marginBottom="@dimen/margin_10"
-            android:paddingTop="@dimen/margin_10"
-            android:paddingBottom="@dimen/margin_10"
-            />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:layout_marginTop="@dimen/margin_10"
-            />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/addAnswerLayout"
-            android:layout_marginTop="@dimen/margin_10"
-            android:layout_marginBottom="@dimen/margin_10"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/edtUserAnswer"
-                android:maxLines="1"
-                android:maxLength="50"
-                android:hint="@string/answer"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/request_pin_start"
-            android:id="@+id/askPIN"
-            app:switchPadding="@dimen/margin_20"
-            android:layout_margin="@dimen/margin_10"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            />
-
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnSave"
-            android:text="Save"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/margin_20"
-            />-->
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

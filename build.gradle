@@ -2,18 +2,18 @@
 
 buildscript {
     ext {
-        kotlin_version = '1.3.41'
+        kotlin_version = '1.3.50'
         room_version = '2.1.0'
-        lifecycle_version = '2.0.0'
+        lifecycle_version = '2.1.0'
         build_tools_version = '3.5.0'
-        andx_app_appcompat = '1.1.0-rc01'
+        andx_app_appcompat = '1.1.0'
         andx_constraint = '2.0.0-beta2'
-        material_design = '1.1.0-alpha09'
+        material_design = '1.1.0-alpha10'
         andx_legacy_support = '1.0.0'
         anko_version = '0.10.4'
         couroutines_version = '1.3.0-M2'
         rxKotlin = '2.4.0'
-        rxAndroid = '2.0.1'
+        rxAndroid = '2.1.0'
         junit_version = '4.12'
     }
 

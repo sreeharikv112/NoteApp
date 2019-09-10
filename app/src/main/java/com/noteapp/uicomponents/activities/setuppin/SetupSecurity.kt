@@ -89,6 +89,11 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
         mSaveButton = findViewById(R.id.btnSave)
         mEdtUserAnswer = findViewById(R.id.edtUserAnswer)
         mEdtInputLayout = findViewById(R.id.addAnswerLayout)
+        mQuestionOne.add("Please Select")
+        mQuestionOne.add("Name of first Pet")
+        mQuestionOne.add("Favourite destination")
+        mQuestionOne.add("Name of first Car")
+        mQuestionOne.add("First job")
 
         mSaveButton.setOnClickListener(this)
         mInputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -108,11 +113,7 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
 
         mPINComponentLayout.visibility = View.VISIBLE
         //Old flow
-        mQuestionOne.add("Please Select")
-        mQuestionOne.add("Name of first Pet")
-        mQuestionOne.add("Favourite destination")
-        mQuestionOne.add("Name of first Car")
-        mQuestionOne.add("First job")
+
 
 
 
