@@ -7,10 +7,9 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.CompoundButton
+import android.widget.*
 import androidx.appcompat.widget.AppCompatSpinner
+import androidx.core.widget.NestedScrollView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textfield.TextInputEditText
@@ -23,11 +22,12 @@ import com.noteapp.uicomponents.activities.settings.SettingsActivity
 import com.noteapp.uicomponents.base.BaseActivity
 import com.noteapp.uicomponents.common.PinEntryEditText
 import kotlinx.android.synthetic.main.activity_note.*
+import kotlinx.android.synthetic.main.content_pin_selected.*
 import kotlinx.android.synthetic.main.content_security.*
 import java.lang.Exception
 
 class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.OnClickListener,IGetSecurityQuestionListener
-,IUpdateSecurityListener , CompoundButton.OnCheckedChangeListener
+,IUpdateSecurityListener , CompoundButton.OnCheckedChangeListener , RadioGroup.OnCheckedChangeListener
 {
     private var pinCheckPendingToSetToTrue = false
     lateinit var mSpinnerQstnOne : AppCompatSpinner
@@ -45,6 +45,9 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
     lateinit var mSharedPrefHelper : SharedPreferenceHelper
     var mKeyRequiredStatus = false
     lateinit var mInputMethodManager : InputMethodManager
+    lateinit var mFingerPrintSelected : RadioButton
+    lateinit var mPINSelected : RadioButton
+    lateinit var mPINComponentLayout : NestedScrollView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,17 +56,50 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
         actionBar!!.title = getString(R.string.setup_security)
         setSupportActionBar(actionBar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-
         securityQstnVM = SecurityQuestionViewModel(application)
+        mSharedPrefHelper = SharedPreferenceHelper(this)
+
+        //New changes.....
+        mFingerPrintSelected = findViewById(R.id.finderPrintOption)
+        mPINSelected = findViewById(R.id.pinOption)
+        mFingerPrintSelected.setOnCheckedChangeListener(this)
+        mPINSelected.setOnCheckedChangeListener(this)
+        mPINComponentLayout = findViewById(R.id.pin_content_layout)
+
+        ///////////////
+        mSwitchAskPIN = findViewById(R.id.askPIN)
+        mSwitchAskPIN.setOnCheckedChangeListener(this)
+        mPin = findViewById(R.id.newPin)
+        mPinConfirm = findViewById(R.id.newPinConfirm)
+        mSpinnerQstnOne = findViewById(R.id.securityQOne)
+        mUserAnswer = findViewById(R.id.edtUserAnswer)
+        mSaveButton = findViewById(R.id.btnSave)
+        mSaveButton.setOnClickListener(this)
+        mInputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+    }
+
+    override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
+
+        if(mFingerPrintSelected.isChecked){
+            mPINComponentLayout.visibility = View.INVISIBLE
+        }else if (mPINSelected.isChecked){
+            setupPINComponents()
+        }
+    }
+
+    private fun setupPINComponents() {
+
+        mPINComponentLayout.visibility = View.VISIBLE
+        //Old flow
         mQuestionOne.add("Please Select")
         mQuestionOne.add("Name of first Pet")
         mQuestionOne.add("Favourite destination")
         mQuestionOne.add("Name of first Car")
         mQuestionOne.add("First job")
-        mSwitchAskPIN = findViewById(R.id.askPIN)
-        mSwitchAskPIN.setOnCheckedChangeListener(this)
 
-        mSharedPrefHelper = SharedPreferenceHelper(this)
+
+
         mKeyRequiredStatus = mSharedPrefHelper.getBoolData(Constants.KEY_PIN_REQUIRED)
         try {
             mShouldSetKeyRequired = intent.getBooleanExtra(Constants.KEY_PIN_REQUIRED,false)
@@ -72,12 +108,7 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
 
         mSelectedSecurityQuestion = mQuestionOne.first()
 
-        mPin = findViewById(R.id.newPin)
-        mPinConfirm = findViewById(R.id.newPinConfirm)
-        mSpinnerQstnOne = findViewById(R.id.securityQOne)
-        mUserAnswer = findViewById(R.id.edtUserAnswer)
-        mSaveButton = findViewById(R.id.btnSave)
-        mSaveButton.setOnClickListener(this)
+
 
         var questionOneAdapter  = ArrayAdapter(this,android.R.layout.simple_spinner_item,
                 mQuestionOne)
@@ -88,7 +119,7 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
         if(mKeyRequiredStatus){
             mSwitchAskPIN.isChecked = true
         }
-        mInputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
 
         mPin.requestFocus()
         mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
