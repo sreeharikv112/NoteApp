@@ -13,6 +13,7 @@ import androidx.core.widget.NestedScrollView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.noteapp.R
 import com.noteapp.common.Constants
 import com.noteapp.db.SharedPreferenceHelper
@@ -22,12 +23,12 @@ import com.noteapp.uicomponents.activities.settings.SettingsActivity
 import com.noteapp.uicomponents.base.BaseActivity
 import com.noteapp.uicomponents.common.PinEntryEditText
 import kotlinx.android.synthetic.main.activity_note.*
-import kotlinx.android.synthetic.main.content_pin_selected.*
+
 import kotlinx.android.synthetic.main.content_security.*
 import java.lang.Exception
 
 class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.OnClickListener,IGetSecurityQuestionListener
-,IUpdateSecurityListener , CompoundButton.OnCheckedChangeListener , RadioGroup.OnCheckedChangeListener
+,IUpdateSecurityListener , CompoundButton.OnCheckedChangeListener /*, RadioGroup.OnCheckedChangeListener*/
 {
     private var pinCheckPendingToSetToTrue = false
     lateinit var mSpinnerQstnOne : AppCompatSpinner
@@ -48,6 +49,9 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
     lateinit var mFingerPrintSelected : RadioButton
     lateinit var mPINSelected : RadioButton
     lateinit var mPINComponentLayout : NestedScrollView
+    lateinit var mEdtUserAnswer : TextInputEditText
+    lateinit var mEdtInputLayout: TextInputLayout
+    lateinit var mRadioGroup: RadioGroup
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,11 +64,20 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
         mSharedPrefHelper = SharedPreferenceHelper(this)
 
         //New changes.....
+        mRadioGroup = findViewById(R.id.radioGroupOption)
         mFingerPrintSelected = findViewById(R.id.finderPrintOption)
         mPINSelected = findViewById(R.id.pinOption)
-        mFingerPrintSelected.setOnCheckedChangeListener(this)
-        mPINSelected.setOnCheckedChangeListener(this)
+        //mFingerPrintSelected.setOnCheckedChangeListener(this)
+        //mPINSelected.setOnCheckedChangeListener(this)
         mPINComponentLayout = findViewById(R.id.pin_content_layout)
+        mRadioGroup.setOnCheckedChangeListener { group, checkedId ->
+
+            if(checkedId == R.id.finderPrintOption){
+                mPINComponentLayout.visibility = View.INVISIBLE
+            }else {
+                setupPINComponents()
+            }
+        }
 
         ///////////////
         mSwitchAskPIN = findViewById(R.id.askPIN)
@@ -74,19 +87,22 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
         mSpinnerQstnOne = findViewById(R.id.securityQOne)
         mUserAnswer = findViewById(R.id.edtUserAnswer)
         mSaveButton = findViewById(R.id.btnSave)
+        mEdtUserAnswer = findViewById(R.id.edtUserAnswer)
+        mEdtInputLayout = findViewById(R.id.addAnswerLayout)
+
         mSaveButton.setOnClickListener(this)
         mInputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
     }
 
-    override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
+    /*override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
 
         if(mFingerPrintSelected.isChecked){
             mPINComponentLayout.visibility = View.INVISIBLE
         }else if (mPINSelected.isChecked){
             setupPINComponents()
         }
-    }
+    }*/
 
     private fun setupPINComponents() {
 
@@ -207,14 +223,14 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
             status = false
             mSpinnerQstnOne.performClick()
         }
-        else if (!mAppUtils.isInputEditTextFilled(edtUserAnswer!!, addAnswerLayout!!, getString(R.string.enter_security_answer))) {
+        else if (!mAppUtils.isInputEditTextFilled(mEdtUserAnswer!!, mEdtInputLayout!!, getString(R.string.enter_security_answer))) {
             mUserAnswer.requestFocus()
             mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
             status = false
         }
-        else if(edtUserAnswer.text!!.length < 4){
+        else if(mEdtUserAnswer.text!!.length < 4){
             showToast(getString(R.string.answer_min_chars))
-            edtUserAnswer.requestFocus()
+            mEdtUserAnswer.requestFocus()
             mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
 
             status = false
@@ -291,7 +307,7 @@ class SetupSecurity: BaseActivity() , AdapterView.OnItemSelectedListener, View.O
                     var securityQstn = SecurityQuestionModel(1,
                             mPinConfirm.text.toString().toInt(),
                             mSelectedSecurityQuestion,
-                            edtUserAnswer.text.toString())
+                            mEdtUserAnswer.text.toString())
 
                     securityQstnVM.insertOrUpdateSecurityQuestion(securityQstn,this)
 

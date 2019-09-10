@@ -22,7 +22,7 @@ import com.noteapp.uicomponents.activities.settings.SecurityResolutionDialog
 class PinActivity : BaseActivity(), View.OnClickListener , SecurityResolutionDialog.UserEnteredAnswer {
     lateinit var mOtpEditText : PinEntryEditText
     lateinit var mInputMethodManager : InputMethodManager
-    lateinit var mSubmit : Button
+    /*lateinit var mSubmit : Button*/
     val resultIntent = Intent()
     var mPreviousPIN = -1
     lateinit var mPreviousQSTN : String
@@ -49,8 +49,8 @@ class PinActivity : BaseActivity(), View.OnClickListener , SecurityResolutionDia
         mAppLogger.debug(TAG,"mPreviousPIN === $mPreviousPIN")
         mAppLogger.debug(TAG,"mPreviousANSWER === $mPreviousANSWER")
 
-        mSubmit = findViewById(R.id.btnSubmit)
-        mSubmit.setOnClickListener(this)
+        /*mSubmit = findViewById(R.id.btnSubmit)
+        mSubmit.setOnClickListener(this)*/
         mSubmittedPIN = ""
         mOtpEditText = findViewById(R.id.otpView)
         mOtpEditText.requestFocus()
@@ -75,6 +75,7 @@ class PinActivity : BaseActivity(), View.OnClickListener , SecurityResolutionDia
                     //sendDataBack(s.toString())
                     //compareData(s.toString())
                     mSubmittedPIN = s.toString()
+                    compareData(mSubmittedPIN)
                 }
             }
         })
@@ -82,11 +83,11 @@ class PinActivity : BaseActivity(), View.OnClickListener , SecurityResolutionDia
 
 
     override fun onClick(v: View?) {
-        if(v!!.id == R.id.btnSubmit){
+        /*if(v!!.id == R.id.btnSubmit){
 
             compareData(mSubmittedPIN)
 
-        }
+        }*/
     }
 
     fun compareData(data:String){

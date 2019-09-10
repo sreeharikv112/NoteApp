@@ -23,6 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:id="@+id/radioGroupOption"
             android:orientation="horizontal">
             <RadioButton
                 android:id="@+id/finderPrintOption"
@@ -49,7 +50,7 @@
                 android:id="@+id/pin_content_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="invisible"
+                android:visibility="gone"
                 layout="@layout/content_pin_selected"/>
 
         <!--<TextView

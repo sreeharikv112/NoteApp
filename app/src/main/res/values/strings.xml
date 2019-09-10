@@ -39,8 +39,8 @@
     <string name="pin_will_not_be_asked_at_start">PIN will not be asked at start!</string>
     <string name="please_setup_pin">Please set up PIN</string>
     <string name="security_settings_updated">Security Settings updated</string>
-    <string name="use_finger_print">Use Finger Print</string>
     <string name="use_pin">Use PIN</string>
+    <string name="use_finger_print">Use Finger Print</string>
     <string-array name="question_one_arrays">
         <item>Name of first Pet</item>
         <item>Favourite destination</item>
