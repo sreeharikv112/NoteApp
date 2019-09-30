@@ -1,5 +1,6 @@
 package com.noteapp.common
 
+import android.os.Build
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -20,5 +21,8 @@ class AppUtils {
         if(!message.isEmpty()){
             textInputLayout.error = message
         }
+    }
+    fun isMarshMallow(): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
     }
 }
