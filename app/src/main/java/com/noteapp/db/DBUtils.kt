@@ -1,5 +1,7 @@
 package com.noteapp.db
 
+import android.content.Context
+import android.util.Log
 import com.noteapp.common.AppLogger
 import com.noteapp.models.NoteModel
 import com.noteapp.models.SecurityQuestionModel
@@ -87,5 +89,13 @@ class DBUtils {
                         listener.didSecurityQuestionUpdated(false)
                     }
                 })
+    }
+
+    fun getCurrentDBPath(context: Context): String{
+
+        val currentDBPath = context.getDatabasePath("notedb.db").absolutePath
+        Log.d("TAG","Current DB path = $currentDBPath")
+
+        return currentDBPath
     }
 }

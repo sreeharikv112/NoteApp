@@ -1,7 +1,12 @@
 package com.noteapp.uicomponents.activities.landing
 
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.os.AsyncTask
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -66,6 +71,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun goToSettings() {
+
         startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
     }
 
@@ -107,5 +113,10 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             intent.putExtra(Constants.EDIT_ACTION,true)
             startActivity(intent)
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 }
