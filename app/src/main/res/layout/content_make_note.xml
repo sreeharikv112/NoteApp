@@ -84,6 +84,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/addNoteDescription"
             android:minHeight="250dp"
+            android:gravity="start"
             android:hint="Note Description"/>
     </com.google.android.material.textfield.TextInputLayout>
 
